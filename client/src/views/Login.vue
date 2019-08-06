@@ -10,23 +10,38 @@
         <el-form-item>
             <el-button type="primary" class="login-btn" @click="login">登陆</el-button>
             <el-button @click="gotoRegister">注册</el-button>
+            <el-button @click="checkToken">验证token</el-button>
         </el-form-item>
     </el-form>
+    <div>token： {{token}}</div>
+    <div>{{info}}</div>
     </div>
 </template>
 <script>
-import { login } from "api/index"
+import { login, checkToken } from "api/index"
 export default {
     data() {
         return {
             form:{
                 userName: "",
                 passWord: ""
-            }
+            },
+            info: "",
+            token: ""
             
         }
     },
     methods:{
+        checkToken(){
+            let params = {};
+            params.token = this.token || localStorage.token || "";
+            checkToken(params).then( res => {
+                if(res.data.code === 0){
+                    this.info = res.data.content;
+                }
+            })
+
+        },
         gotoRegister(){
             this.$router.push("Register")
         },
@@ -53,7 +68,9 @@ export default {
                     this.$message({
                         type: "success",
                         message: "登录成功"
-                    })
+                    });
+                    localStorage.setItem("token", res.data.content)
+                    this.token = res.data.content;
                 } else {
                     let message = res.data.message;
                     this.$message({

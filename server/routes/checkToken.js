@@ -19,27 +19,43 @@ router.post('/', function(req, res, next) {
 
   // 连接数据库 
   let {userName, passWord} = req.body;
-  let sql = `SELECT * FROM login WHERE user_name = '${userName}' AND pass_word = '${passWord}';`
+  
+// 验证 token
+let token = req.body.token || "";
+console.log(token)
+console.log(tokenFn.verifyToken(token))
+if (!tokenFn.verifyToken(token)) {
+    let data = {};
+    data.code = -1;
+    data.message = "登录已失效";
+    data.content = null;
+    res.send(data)
+    return
+}
+
+// 解析 token
+let userInfo = tokenFn.parseToken(token);
+let user_id = userInfo.userId;
+console.log(userInfo)
+
+  let sql = `SELECT * FROM login WHERE user_id = '${user_id}';`
+  console.log("sql: ",sql)
   connection.query(sql, function (err,result) {
     if(err){
         console.log('[SELECT ERROR]:',err.message);
     }
-    console.log("result: ", result)
     sqlData = JSON.parse(JSON.stringify(result));
+    console.log("sqlData", sqlData)
     if(sqlData && sqlData.length>0){
-      console.log("sqlData: ", sqlData)
         let content = sqlData[0];
-        console.log("content:", sqlData[0])
         let userId = content.user_id || "123456789";
-        console.log('userId: ', userId)
-        let token = tokenFn.createToken(userId, "10", "s");
-
+        let token = tokenFn.createToken(userId, 30);
         data.code = 0;
         data.message = "";
-        data.content = token;
+        data.content = content;
       } else {
         data.code = -1;
-        data.message = "登录失败";
+        data.message = "用户不存在";
         data.content = null;
       }
       res.send(data)

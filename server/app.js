@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
+var checkTokenRouter = require('./routes/checkToken');
 
 var app = express();
 
@@ -24,6 +25,15 @@ app.all('*', function (req, res, next) {
   next();
 });
 
+// const token = require('./routes/token.js');
+// const jwtDecode = require('jwt-decode');
+
+// let tokenNum = token.createToken("大地瓜","7","days") + '0'
+// let tokenParse = jwtDecode(tokenNum);
+
+// console.log("加密: ", tokenNum)
+// console.log("解析： ", tokenParse)
+// console.log("验证： ", token.verifyToken(tokenNum))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,11 +45,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 生成随机id
+const uuid = require('node-uuid');
+const creatuuid= uuid.v1()
+console.log(creatuuid)
+
+// 路由
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-// 登陆
 app.use('/login', loginRouter);
+app.use('/checkToken', checkTokenRouter);
 
 
 // catch 404 and forward to error handler

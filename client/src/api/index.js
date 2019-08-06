@@ -58,3 +58,8 @@ export const users = params => {
 export const login = params => {
     return instance.post('/login', params)
 }
+
+// 验证token
+export const checkToken = params => {
+    return instance.post('/checkToken', params)
+}
