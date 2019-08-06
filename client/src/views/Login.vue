@@ -38,6 +38,12 @@ export default {
             checkToken(params).then( res => {
                 if(res.data.code === 0){
                     this.info = res.data.content;
+                    this.$message({
+                        type: "success",
+                        message: "token有效 验证成功"
+                    })
+                } else {
+                    this.$message.error(res.data.message)
                 }
             })
 
