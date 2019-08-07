@@ -14,7 +14,14 @@ const CONTENT_TYPE = 'application/json'
 var instance = axios.create({
     baseURL: BASE_URL,
     headers: {
-        'content-type': CONTENT_TYPE,
+        "content-type": CONTENT_TYPE,
+    }
+});
+
+var uploadInstance = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+        "content-type": "multipart/form-data",
     }
 });
 
@@ -62,4 +69,9 @@ export const login = params => {
 // 验证token
 export const checkToken = params => {
     return instance.post('/checkToken', params)
+}
+
+// 上传文件
+export const upload = params => {
+    return uploadInstance.post('/upload', params)
 }

@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var checkTokenRouter = require('./routes/checkToken');
+var uploadRouter = require('./routes/upload');
 
 var app = express();
 
@@ -48,13 +49,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 生成随机id
 const uuid = require('node-uuid');
 const creatuuid= uuid.v1()
-console.log(creatuuid)
 
 // 路由
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/checkToken', checkTokenRouter);
+app.use('/upload', uploadRouter);
 
 
 // catch 404 and forward to error handler

@@ -22,8 +22,6 @@ router.post('/', function(req, res, next) {
   
 // 验证 token
 let token = req.body.token || "";
-console.log(token)
-console.log(tokenFn.verifyToken(token))
 if (!tokenFn.verifyToken(token)) {
     let data = {};
     data.code = -1;
@@ -36,16 +34,13 @@ if (!tokenFn.verifyToken(token)) {
 // 解析 token
 let userInfo = tokenFn.parseToken(token);
 let user_id = userInfo.userId;
-console.log(userInfo)
 
   let sql = `SELECT * FROM login WHERE user_id = '${user_id}';`
-  console.log("sql: ",sql)
   connection.query(sql, function (err,result) {
     if(err){
         console.log('[SELECT ERROR]:',err.message);
     }
     sqlData = JSON.parse(JSON.stringify(result));
-    console.log("sqlData", sqlData)
     if(sqlData && sqlData.length>0){
         let content = sqlData[0];
         let userId = content.user_id || "123456789";

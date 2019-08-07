@@ -24,16 +24,11 @@ router.post('/', function(req, res, next) {
     if(err){
         console.log('[SELECT ERROR]:',err.message);
     }
-    console.log("result: ", result)
     sqlData = JSON.parse(JSON.stringify(result));
     if(sqlData && sqlData.length>0){
-      console.log("sqlData: ", sqlData)
         let content = sqlData[0];
-        console.log("content:", sqlData[0])
         let userId = content.user_id || "123456789";
-        console.log('userId: ', userId)
-        let token = tokenFn.createToken(userId, "10", "s");
-
+        let token = tokenFn.createToken(userId, "6", "s");
         data.code = 0;
         data.message = "";
         data.content = token;

@@ -28,7 +28,6 @@ export default {
             },
             info: "",
             token: ""
-            
         }
     },
     methods:{
@@ -46,7 +45,6 @@ export default {
                     this.$message.error(res.data.message)
                 }
             })
-
         },
         gotoRegister(){
             this.$router.push("Register")
