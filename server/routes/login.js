@@ -27,14 +27,14 @@ router.post('/', function(req, res, next) {
     sqlData = JSON.parse(JSON.stringify(result));
     if(sqlData && sqlData.length>0){
         let content = sqlData[0];
-        let userId = content.user_id || "123456789";
+        let userId = content.user_id || "";
         let token = tokenFn.createToken(userId, "6", "s");
         data.code = 0;
         data.message = "";
         data.content = token;
       } else {
         data.code = -1;
-        data.message = "登录失败";
+        data.message = "用户名或密码错误";
         data.content = null;
       }
       res.send(data)

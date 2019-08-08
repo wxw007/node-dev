@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var checkTokenRouter = require('./routes/checkToken');
 var uploadRouter = require('./routes/upload');
+var registerRouter = require('./routes/register');
 
 var app = express();
 
@@ -55,7 +56,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/checkToken', checkTokenRouter);
-app.use('/upload', uploadRouter);
+app.use('/register', registerRouter);
 
 
 // catch 404 and forward to error handler

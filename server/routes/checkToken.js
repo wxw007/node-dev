@@ -43,7 +43,7 @@ let user_id = userInfo.userId;
     sqlData = JSON.parse(JSON.stringify(result));
     if(sqlData && sqlData.length>0){
         let content = sqlData[0];
-        let userId = content.user_id || "123456789";
+        let userId = content.user_id || "";
         let token = tokenFn.createToken(userId, 30);
         data.code = 0;
         data.message = "";

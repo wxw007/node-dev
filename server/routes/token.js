@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const jwtDecode = require('jwt-decode');
 
-const secret = 'abc';
+const secret = 'wxw';
 
 // 生成token
 const createToken = (userId, expires, strTimer="") => {

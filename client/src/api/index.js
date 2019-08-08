@@ -71,7 +71,9 @@ export const checkToken = params => {
     return instance.post('/checkToken', params)
 }
 
-// 上传文件
-export const upload = params => {
-    return uploadInstance.post('/upload', params)
+// 注册
+export const register = params => {
+    return instance.post('/register', params)
 }
+
+
