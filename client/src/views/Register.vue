@@ -189,11 +189,8 @@ export default {
                             that.$message({
                                 type: "success",
                                 message: "注册成功",
-                                onClose(){
-                                    that.$router.push("login")
-                                }
                             })
-                            
+                            that.$router.push("login")
                         } else {
                             that.$message("操作失败")
                         }
