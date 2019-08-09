@@ -1,30 +1,33 @@
 <template>
   <div class="home">
+    <header-base></header-base>
+    <div class="main">
+      <!-- <img src="../../public/images/indexBg.jpg" alt=""> -->
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import {users} from '../api/index.js'
+import HeaderBase from '@/components/Header-Base.vue'
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    HeaderBase
   },
   mounted(){
     // this.HTTPusers()
   },
   methods:{
-    HTTPusers(){
-      users({a:123}).then( res=>{
-        console.log(res);
-      })
-      .catch( err => {
-        console.log(err)
-      })
-    }
+   
   }
 }
 </script>
+<style lang="less">
+  .main{
+    height: calc(100vh - 62px);
+    background: url("../../public/images/indexBg.jpg") no-repeat;
+    background-size: cover;
+
+  }
+</style>

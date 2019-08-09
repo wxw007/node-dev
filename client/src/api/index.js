@@ -5,6 +5,10 @@
 import axios from 'axios'
 import qs from 'qs';
 import router from '@/router.js'
+import {
+    Message,
+    MessageBox
+} from 'element-ui'
 
 //基本配置常量
 let BASE_URL = "//127.0.0.1:3000";
@@ -26,18 +30,20 @@ var uploadInstance = axios.create({
 });
 
 // ====请求拦截器 （请求的动态数据需要在请求拦截器里赋值 例如token) ==== 
-instance.interceptors.request.use(function(config) {
+instance.interceptors.request.use(function (config) {
+    config.headers['token'] = localStorage.token;
     return config;
-}, function(error) {
+}, function (error) {
     //请求错误处理
 })
 
 // ====响应拦截器====
-instance.interceptors.response.use(function(response) {
+instance.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     return response;
-}, function(error) {
-   console.log(error)
+}, function (error) {
+    console.log(error)
+    
     return false;
 });
 
@@ -54,11 +60,15 @@ export const getCards = params => {
 
 //get
 export const getCardsDetail = params => {
-    return instance.get('/userManager/card/viewCardInfo', { params })
+    return instance.get('/userManager/card/viewCardInfo', {
+        params
+    })
 }
 
 export const users = params => {
-    return instance.get('/users', { params })
+    return instance.get('/users', {
+        params
+    })
 }
 
 // 登陆
@@ -76,4 +86,7 @@ export const register = params => {
     return instance.post('/register', params)
 }
 
-
+// 获取用户信息
+export const getUserInfo = params => {
+    return instance.get('/getUserInfo', {params})
+}

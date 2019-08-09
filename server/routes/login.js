@@ -28,7 +28,7 @@ router.post('/', function(req, res, next) {
     if(sqlData && sqlData.length>0){
         let content = sqlData[0];
         let userId = content.user_id || "";
-        let token = tokenFn.createToken(userId, "6", "s");
+        let token = tokenFn.createToken(userId, "3", "days");
         data.code = 0;
         data.message = "";
         data.content = token;

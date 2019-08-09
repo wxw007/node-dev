@@ -24,7 +24,6 @@ export default {
                 passWord: ""
             },
             info: "",
-            token: ""
         }
     },
     methods:{
@@ -68,11 +67,11 @@ export default {
                 if(res.data.code === 0){
                     this.$message({
                         type: "success",
-                        message: "登录成功"
+                        message: "登录成功",
                     });
                     localStorage.setItem("token", res.data.content)
-                    this.token = res.data.content;
                     this.$router.push("/")
+                    
                 } else {
                     let message = res.data.message;
                     this.$message.error(message)
