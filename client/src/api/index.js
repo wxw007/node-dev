@@ -11,7 +11,7 @@ import {
 } from 'element-ui'
 
 //基本配置常量
-let BASE_URL = "//192.168.3.245:3000";
+let BASE_URL = "//127.0.0.1:3000";
 const CONTENT_TYPE = 'application/json'
 
 //自定义请求实例  这里只能赋值静态数据
@@ -89,4 +89,9 @@ export const register = params => {
 // 获取用户信息
 export const getUserInfo = params => {
     return instance.get('/getUserInfo', {params})
+}
+
+// 发布
+export const submitArtical = params => {
+    return instance.post('/submitArtical', params)
 }

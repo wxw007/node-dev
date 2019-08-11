@@ -11,6 +11,7 @@ var checkTokenRouter = require('./routes/checkToken');
 var uploadRouter = require('./routes/upload');
 var registerRouter = require('./routes/register');
 var getUserInfoRouter = require('./routes/getUserInfo');
+var submitArticalRouter = require('./routes/submitArtical');
 
 var app = express();
 
@@ -47,6 +48,7 @@ app.use('/login', loginRouter);
 app.use('/checkToken', checkTokenRouter);
 app.use('/register', registerRouter);
 app.use('/getUserInfo', getUserInfoRouter);
+app.use('/submitArtical', submitArticalRouter);
 
 
 // catch 404 and forward to error handler
