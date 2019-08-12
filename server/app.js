@@ -5,13 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var checkTokenRouter = require('./routes/checkToken');
 var uploadRouter = require('./routes/upload');
 var registerRouter = require('./routes/register');
 var getUserInfoRouter = require('./routes/getUserInfo');
 var submitArticalRouter = require('./routes/submitArtical');
+var submitWorkDiaryRouter = require('./routes/submitWorkDiary');
 
 var app = express();
 
@@ -43,12 +43,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 路由
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/checkToken', checkTokenRouter);
 app.use('/register', registerRouter);
 app.use('/getUserInfo', getUserInfoRouter);
 app.use('/submitArtical', submitArticalRouter);
+app.use('/submitWorkDiary', submitWorkDiaryRouter);
 
 
 // catch 404 and forward to error handler

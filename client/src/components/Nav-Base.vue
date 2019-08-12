@@ -3,6 +3,9 @@
     <div class="nav-item" @click="goto('/')">
       <i class="el-icon-house"></i> 首页
     </div>
+    <div class="nav-item" @click="goto('/work-diary')">
+      <i class="el-icon-edit-outline"></i> 工作日志
+    </div>
     <div class="nav-item">
       <i class="el-icon-reading"></i> 实用好文
     </div>
@@ -16,14 +19,13 @@
       <i class="el-icon-chat-dot-round"></i> 我的提问
     </div>
     <div class="nav-item">待定模块</div>
-    <div class="nav-item">待定模块</div>
   </div>
 </template>
 <script>
 export default {
-  methods:{
-    goto(url){
-      this.$router.push(url)
+  methods: {
+    goto(url) {
+      this.$router.push(url);
     }
   }
 };
@@ -31,7 +33,7 @@ export default {
 <style lang="less" scoped>
 .nav {
   width: 120px;
-  
+
   .nav-item {
     position: relative;
     left: 0;

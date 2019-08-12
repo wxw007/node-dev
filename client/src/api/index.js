@@ -91,7 +91,12 @@ export const getUserInfo = params => {
     return instance.get('/getUserInfo', {params})
 }
 
-// 发布
+// 编辑-发布
 export const submitArtical = params => {
     return instance.post('/submitArtical', params)
+}
+
+// 工作日志-保存
+export const submitWorkDiary = params => {
+    return instance.post('/submitWorkDiary', params)
 }
