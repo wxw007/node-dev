@@ -35,7 +35,7 @@ import { submitWorkDiary } from "api/index";
 export default {
   data() {
     return {
-        day: "",
+      day: "",
       dynamicValidateForm: {
         domains: [
           {
@@ -45,19 +45,33 @@ export default {
       }
     };
   },
-  created(){
-      this.getDay()
+  created() {
+    this.getDay();
   },
   methods: {
     // 获取当天日期
     getDay() {
       let day = new Date();
       day.setTime(day.getTime());
-       let myddy=day.getDay();//获取存储当前日期
-  const weekday=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+      let myddy = day.getDay(); //获取存储当前日期
+      const weekday = [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六"
+      ];
       var s2 =
-        day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate() + " " + weekday[myddy];
-        this.day = s2;
+        day.getFullYear() +
+        "-" +
+        (day.getMonth() + 1) +
+        "-" +
+        day.getDate() +
+        " " +
+        weekday[myddy];
+      this.day = s2;
     },
     // 提交表单前处理数据
     dealData() {
@@ -79,8 +93,16 @@ export default {
           submitWorkDiary(params).then(res => {
             if (res.data.code === 0) {
               _this.$message({
-                type: "保存成功"
+                type: "success",
+                message: "保存成功"
               });
+              _this.dynamicValidateForm = {
+                domains: [
+                  {
+                    value: ""
+                  }
+                ]
+              };
             } else {
               _this.$message.error(res.data.message);
             }
