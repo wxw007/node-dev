@@ -100,3 +100,7 @@ export const submitArtical = params => {
 export const submitWorkDiary = params => {
     return instance.post('/submitWorkDiary', params)
 }
+// 工作日志-获取列表
+export const getWorkDiary = params => {
+    return instance.get('/getWorkDiary', {params})
+}

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const mysql = require("mysql");
 const tokenFn = require("./token");
-const uuid = require("uuid")
 
 var connection = mysql.createConnection({ //创建mysql实例
     host:'127.0.0.1',
@@ -13,8 +12,10 @@ var connection = mysql.createConnection({ //创建mysql实例
 });
 connection.connect();
 
-router.post("/", function(req, res, next){
+router.get("/", function(req, res, next){
     let token = req.headers.token;
+    let weekStartDate = req.query.weekStartDate-0 || 0;
+    let weekEndDate = req.query.weekEndDate-0 || 0;
     if (!tokenFn.verifyToken(token)) {
         let data = {};
         data.code = -1;
@@ -28,17 +29,22 @@ router.post("/", function(req, res, next){
     let userInfo = tokenFn.parseToken(token);
     let user_id = userInfo.userId;
 
-    let content = req.body.content;
-    let create_time = Date.now();
-    let sql = `INSERT INTO workDiary (create_time, content, author_id) VALUES ('${create_time}', '${content}', '${user_id}');`
+    let sql = "";
+    console.log(req.query)
+    if(weekStartDate && weekEndDate){
+        sql = `SELECT create_time, content FROM workDiary WHERE author_id = '${user_id}' AND create_time >= ${weekStartDate} AND create_time <= ${weekEndDate} ORDER BY create_time DESC;`
+    } else {
+        sql = `SELECT create_time, content FROM workDiary WHERE author_id = '${user_id}' ORDER BY create_time DESC;`
+    }
+    
     connection.query(sql, function (err,result) {
         let data = {};
     
         if(err){
             console.log('[SELECT ERROR]:',err.message);
-            res.json({code: -1, message: "保存失败", content: null})
+            res.json({code: -1, message: "请求失败", content: null})
         } else {
-            res.json({code: 0, message: "保存成功", content: null})
+            res.json({code: 0, message: "请求成功", content: result})
         }
     })
     
