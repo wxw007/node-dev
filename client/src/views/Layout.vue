@@ -23,7 +23,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .wrap {
-  background: url("../../public/images/indexBg.jpg") no-repeat;
+  // background: url("../../public/images/indexBg.jpg") no-repeat;
+  // background: #f2f2f2;
   background-size: cover;
   background-attachment: fixed;
   box-sizing: border-box;

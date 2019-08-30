@@ -192,7 +192,7 @@ export default {
                             })
                             that.$router.push("login")
                         } else {
-                            that.$message("操作失败")
+                            that.$message.error(res.data.message)
                         }
                     })
                 } else {

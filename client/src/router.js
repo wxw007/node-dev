@@ -5,7 +5,7 @@ import Layout from './views/Layout.vue'
 import Register from './views/Register.vue'
 import Home from './views/Home.vue'
 import Detail from './views/Detail.vue'
-import Edit from './views/Edit.vue'
+import articalEdit from './views/articalEdit.vue'
 import WorkDiary from './views/WorkDiary.vue'
 
 Vue.use(Router)
@@ -15,7 +15,7 @@ export default new Router({
     {
       path: '/',
       component: Home,
-      redirect: '/home'
+      redirect: '/work-diary'
     },
     {
       path: '/layout',
@@ -35,10 +35,10 @@ export default new Router({
           alias: '/detail'
         },
         {
-          path: '/layout/edit',
-          name: 'Edit',
-          component: Edit,
-          alias: '/edit'
+          path: '/layout/artical-edit',
+          name: 'articalEdit',
+          component: articalEdit,
+          alias: '/articaledit'
         },
         {
           path: '/layout/work-diary',

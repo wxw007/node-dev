@@ -4,8 +4,8 @@
         <div class="title">最新动态</div>
         <div class="recommend-content">
           <!-- <el-timeline v-infinite-scroll="load" infinite-scroll-delay="300" infinite-scroll-distance="100" infinite-scroll-immediate="1"> -->
-          <el-timeline >
-            <el-timeline-item  v-for="(item, index) in arr" timestamp="2018/4/3" placement="top">
+          <el-timeline style="padding-right: 30px">
+            <el-timeline-item  v-for="(item, index) in arr" timestamp="2018/4/3" placement="top" :key="index">
               <el-card class="recommend-content-item">
                 <div class="content" @click="gotoDetail(index)">
                   <h4>关于 Vue 动态设置对象属性视图不更新问题</h4>
