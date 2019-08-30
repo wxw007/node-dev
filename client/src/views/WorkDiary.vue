@@ -44,7 +44,7 @@
           <el-timeline-item
             v-for="(item,index) in workDiaryList"
             :key="index"
-            :timestamp="'最后更新时间 '+formatDate(item.create_time)"
+            :timestamp="'最后更新时间: '+ formatDate(item.create_time)"
             placement="top"
             color="rgb(81, 174, 250)"
           >

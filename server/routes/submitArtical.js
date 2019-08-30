@@ -71,7 +71,7 @@ function html_encode(str)
       console.log('[SELECT ERROR]:', err.message);
       res.json({
         code: -1,
-        message: "添加失败",
+        message: "发布失败",
         content: null
       })
       return false
