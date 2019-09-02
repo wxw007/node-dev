@@ -35,7 +35,7 @@ if (!tokenFn.verifyToken(token)) {
 let userInfo = tokenFn.parseToken(token);
 let user_id = userInfo.userId;
 
-  let sql = `SELECT * FROM login WHERE user_id = '${user_id}';`
+  let sql = `SELECT * FROM user WHERE user_id = '${user_id}';`
   connection.query(sql, function (err,result) {
     if(err){
         console.log('[SELECT ERROR]:',err.message);

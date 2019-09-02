@@ -4,117 +4,166 @@
             <el-input v-model="title" placeholder="请输入标题(必填)" require></el-input>
         </div>
         <div class="operation">
-            <el-button style="float: right;margin-top: 8px;margin-right: 10px; font-size: 14px;" size="mini" type="primary" @click="submit">发布</el-button>
+            <el-button
+                style="float: right;margin-top: 8px;margin-right: 10px; font-size: 14px;"
+                size="mini"
+                type="primary"
+                @click="submit"
+            >发布</el-button>
         </div>
-         <quill-editor
+        <quill-editor
             v-model="content"
-            ref="myQuillEditor" 
-            :options="editorOption" 
-            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-            @change="onEditorChange($event)">
-        </quill-editor>
+            ref="myQuillEditor"
+            :options="editorOption"
+            @blur="onEditorBlur($event)"
+            @focus="onEditorFocus($event)"
+            @change="onEditorChange($event)"
+        ></quill-editor>
     </div>
 </template>
 <script>
-import { submitArtical } from "api/index"
+import { submitArtical, getArtical, updateArtical } from "api/index";
 import { quillEditor } from "vue-quill-editor"; //调用编辑器
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
 export default {
-     components: {
+    components: {
         quillEditor
     },
     data() {
         return {
-            content: "<p>1111</p>",
+            content: null,
             editorOption: {},
-            title: ""
-        }
-    },
-    methods: {
-        onEditorReady(editor) { // 准备编辑器
- 
-        },
-        onEditorBlur(){}, // 失去焦点事件
-        onEditorFocus(){}, // 获得焦点事件
-        onEditorChange(e){
-            console.log(this.editor)
-        }, 
-        // 转码
-        escapeStringHTML(str) {
-            str = str.replace(/&lt;/g,'<');
-            str = str.replace(/&gt;/g,'>');
-            return str;
-        },
-         submit(){
-            let params = {};
-            params.content = this.content;
-            params.title = this.title.trim();
-            if(!this.title){
-                this.$message.error("请填写标题")
-                return
-            }
-            if(!this.content){
-               this.$message.error("请填写内容")
-                return 
-            }
-            submitArtical(params).then(res => {
-                if(res.data.code === 0){
-                    this.$message({
-                        type: "success",
-                        message: "发布成功"
-                    })
-                } else {
-                    this.$message.error(res.data.message)
-                }
-
-            }).catch(err => {
-
-            })
-
-        }
+            title: "",
+            editId: null,
+        };
     },
     computed: {
         editor() {
             return this.$refs.myQuillEditor.quill;
         },
-       
-    }
+    },
+    created() {
+        this.initData();
+    },
+    methods: {
+        // 初始化回填数据
+        initData() {
+            this.editId = this.$route.params.id - 0;
+            // 若是新建
+            if (!this.editId || this.editId === "new") {
+                return;
+            }
+            // 若是编辑 则回填数据
+            this.getArticalData();
+        },
+        // 获取文章数据
+        getArticalData() {
+            getArtical({ id: this.editId }).then(res => {
+                let data = res.data;
+                if (data.code === 0) {
+                    this.content = data.content[0].content;
+                    this.title = data.content[0].title;
+                }
+            });
+        },
+        onEditorReady(editor) {
+            // 准备编辑器
+        },
+        onEditorBlur() {}, // 失去焦点事件
+        onEditorFocus() {}, // 获得焦点事件
+        onEditorChange(e) {
+            console.log(this.editor);
+        },
+        // 转码
+        // escapeStringHTML(str) {
+        //     str = str.replace(/&lt;/g, "<");
+        //     str = str.replace(/&gt;/g, ">");
+        //     return str;
+        // },
+        submit() {
+            let params = {};
+            params.content = this.content;
+            params.title = this.title.trim();
+            if (!this.title) {
+                this.$message.error("请填写标题");
+                return;
+            }
+            if (!this.content) {
+                this.$message.error("请填写内容");
+                return;
+            }
+            if (this.editId && this.editId!=='new') {
+                params.id = this.editId;
+                this.updateArtical(params);
+            } else {
+                this.submitArtical(params);
+            }
+        },
+        // 新发布文章
+        submitArtical(params) {
+            submitArtical(params)
+                .then(res => {
+                    if (res.data.code === 0) {
+                        this.$message({
+                            type: "success",
+                            message: "发布成功"
+                        });
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
+                })
+                .catch(err => {});
+        },
 
-}
-</script>
-<style lang="less" scoped>
-   
-    .quill-editor{
-        height: calc(100vh - 180px - 50px);
-        background: #fff;
-
-    }
-    .ql-editor{
-    }
-    /deep/.ql-toolbar.ql-snow + .ql-container.ql-snow{
-        background: #fff;
-    }
-    /deep/.ql-snow .ql-tooltip.ql-flip{
-        left:0 !important;
-        top: 0 !important;
-    }
-
-    .title{
-        height: 40px;
-        margin-bottom: 10px;
-        .el-input{
-            font-size: 16px;
-            color: #333;
+        // 更新文章
+        updateArtical(params) {
+            updateArtical(params)
+                .then(res => {
+                    if (res.data.code === 0) {
+                        this.$message({
+                            type: "success",
+                            message: "更新成功"
+                        });
+                        this.initData();
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
+                })
+                .catch(err => {});
         }
     }
-    .require::before{
-        content: "*";
-        color: #F00;
-        font-size: 10px;
-        position: absolute;
-        left: -10px
+};
+</script>
+<style lang="less" scoped>
+.quill-editor {
+    height: calc(100vh - 180px - 50px);
+    background: #fff;
+}
+.ql-editor {
+}
+/deep/.ql-toolbar.ql-snow + .ql-container.ql-snow {
+    background: #fff;
+}
+/deep/.ql-snow .ql-tooltip.ql-flip {
+    left: 0 !important;
+    top: 0 !important;
+}
+
+.title {
+    height: 40px;
+    margin-bottom: 10px;
+    .el-input {
+        font-size: 16px;
+        color: #333;
     }
-  
+}
+.require::before {
+    content: "*";
+    color: #f00;
+    font-size: 10px;
+    position: absolute;
+    left: -10px;
+}
 </style>

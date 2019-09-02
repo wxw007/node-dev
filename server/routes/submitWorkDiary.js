@@ -46,14 +46,17 @@ router.post("/", function (req, res, next) {
             1
 
 
-        let sql = `SELECT content FROM workDiary WHERE author_id = '${user_id}' AND create_time >= ${start} AND create_time < ${end};`
+        let sql = `SELECT content, id FROM workDiary WHERE author_id = '${user_id}' AND create_time >= ${start} AND create_time < ${end};`
         connection.query(sql, function (err, result) {
-            let contentList = JSON.parse(JSON.stringify(result));
+            
+            
             if (err) {
                 console.log('[SELECT ERROR]:', err.message);
                 res.json({ code: -1, message: "保存失败", content: null })
             } else {
+                let contentList = JSON.parse(JSON.stringify(result));
                 if (result && contentList.length > 0) {
+                    let id = contentList[0].id;
                     let oldContent = "";
                     contentList.forEach(item => {
                         oldContent += item.content+','
@@ -64,7 +67,7 @@ router.post("/", function (req, res, next) {
                     })
                     let newContent = oldContent + reqContent;
                     newContent = newContent.substring(0, newContent.length - 1)
-                    updateWorkDiary(newContent)
+                    updateWorkDiary(newContent, id)
 
                 } else {
                     insertWorkDiary()
@@ -92,8 +95,8 @@ router.post("/", function (req, res, next) {
     }
 
     //在已有数据上更新记录
-    function updateWorkDiary(newContent) {
-        let sqlUpdate = `UPDATE workDiary SET content='${newContent}', create_time=${create_time} WHERE author_id='${user_id}';`
+    function updateWorkDiary(newContent, id) {
+        let sqlUpdate = `UPDATE workDiary SET content='${newContent}', create_time=${create_time} WHERE author_id='${user_id}' AND id = ${id};`
         console.log('sqlUpdate: ', sqlUpdate)
         connection.query(sqlUpdate, function (err, result) {
             if (err) {

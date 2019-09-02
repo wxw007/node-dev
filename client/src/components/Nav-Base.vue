@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
-    <div class="nav-item disabled">
-      <i class="el-icon-house"></i> 首页
+    <div class="nav-item" @click="goto('/')">
+      <i class="el-icon-house" ></i> 首页
     </div>
     <div class="nav-item" @click="goto('/work-diary')">
       <i class="el-icon-edit-outline"></i> 工作日志

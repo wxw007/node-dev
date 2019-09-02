@@ -156,7 +156,6 @@ export default {
         obj.content = item.content.split(",");
         return obj;
       });
-      console.log(newArr);
       return newArr;
     },
     handleClick() {

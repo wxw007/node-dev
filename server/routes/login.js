@@ -20,7 +20,7 @@ router.post('/', function(req, res, next) {
 
   // 连接数据库 
   let {userName, passWord} = req.body;
-  let sql = `SELECT * FROM login WHERE user_name = '${userName}' AND pass_word = '${passWord}';`
+  let sql = `SELECT * FROM user WHERE user_name = '${userName}' AND pass_word = '${passWord}';`
   connection.query(sql, function (err,result) {
     if(err){
         console.log('[SELECT ERROR]:',err.message);

@@ -15,7 +15,7 @@ export default new Router({
     {
       path: '/',
       component: Home,
-      redirect: '/work-diary'
+      redirect: '/home'
     },
     {
       path: '/layout',
@@ -26,19 +26,22 @@ export default new Router({
           path: '/layout/home',
           name: 'Home',
           component: Home,
-          alias: '/home'
+          alias: '/home',
+          meta:{
+            keepAlive: true
+          }
         },
         {
-          path: '/layout/detail/:articleId',
+          path: '/layout/detail/:id',
           name: 'Detail',
           component: Detail,
-          alias: '/detail'
+          alias: '/detail/:id'
         },
         {
-          path: '/layout/artical-edit',
+          path: '/layout/artical-edit/:id',
           name: 'articalEdit',
           component: articalEdit,
-          alias: '/articaledit'
+          alias: '/articaledit/:id'
         },
         {
           path: '/layout/work-diary',

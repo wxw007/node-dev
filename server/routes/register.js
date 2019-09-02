@@ -29,7 +29,7 @@ router.post('/', function (req, res, next) {
 
   // 账号是否被注册
   function isExits() {
-    let isExitsSql = `SELECT user_name FROM login WHERE user_name = '${userName}';`
+    let isExitsSql = `SELECT user_name FROM user WHERE user_name = '${userName}';`
     connection.query(isExitsSql, function (err, result) {
       if (err) {
         console.log('[SELECT ERROR]:', err.message);

@@ -91,11 +91,6 @@ export const getUserInfo = params => {
     return instance.get('/getUserInfo', {params})
 }
 
-// 编辑-发布
-export const submitArtical = params => {
-    return instance.post('/submitArtical', params)
-}
-
 // 工作日志-保存
 export const submitWorkDiary = params => {
     return instance.post('/submitWorkDiary', params)
@@ -103,4 +98,18 @@ export const submitWorkDiary = params => {
 // 工作日志-获取列表
 export const getWorkDiary = params => {
     return instance.get('/getWorkDiary', {params})
+}
+
+// 获取文章列表 (若有id则为单篇文章数据)
+export const getArtical = params => {
+    return instance.get('/getArtical', {params})
+}
+
+// 新发布文章
+export const submitArtical = params => {
+    return instance.post('/submitArtical', params)
+}
+// 更新文章
+export const updateArtical = params => {
+    return instance.post('/updateArtical', params)
 }

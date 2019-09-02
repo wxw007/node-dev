@@ -37,7 +37,7 @@ let userInfo = tokenFn.parseToken(token);
 let user_id = userInfo.userId;
 console.log('user_id: ', user_id)
 
-  let sql = `SELECT nick_name, avatar FROM login WHERE user_id = '${user_id}';`
+  let sql = `SELECT nick_name, avatar FROM user WHERE user_id = '${user_id}';`
   connection.query(sql, function (err,result) {
     let data = {};
 
