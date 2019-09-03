@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const uuid = require("uuid");
 
 var connection = mysql.createConnection({ //创建mysql实例
-  host: '127.0.0.1',
+  host: '0.0.0.0',
   port: '3306',
   user: 'root',
   password: '123456789',
@@ -57,10 +57,12 @@ router.post('/', function (req, res, next) {
 
   // 创建用户数据--注册
   function insertSql() {
-    let insertSql = `INSERT INTO login (user_id, user_name, pass_word, nick_name, avatar) VALUES ('${userId}','${userName}', '${passWord}', '${nickName}', '${avatarUrl}');`
+    let insertSql = `INSERT INTO user (user_id, user_name, pass_word, nick_name, avatar) VALUES ('${userId}','${userName}', '${passWord}', '${nickName}', '${avatarUrl}');`
     connection.query(insertSql, function (err, result) {
       if (err) {
+        console.log('------------')
         console.log('[SELECT ERROR]:', err.message);
+        console.log('------------')
         res.json({
           code: -1,
           message: "注册失败",

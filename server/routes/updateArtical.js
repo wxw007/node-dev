@@ -5,7 +5,7 @@ const tokenFn = require("./token");
 const _ = require("node-plus-string")
 
 var connection = mysql.createConnection({ //创建mysql实例
-  host: '127.0.0.1',
+  host: '0.0.0.0',
   port: '3306',
   user: 'root',
   password: '123456789',

@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const tokenFn = require("./token");
 
 var connection = mysql.createConnection({ //创建mysql实例
-    host:'127.0.0.1',
+    host:'0.0.0.0',
     port:'3306',
     user:'root',
     password:'123456789',
@@ -27,8 +27,7 @@ router.get("/", function(req, res, next){
     let userInfo = tokenFn.parseToken(token);
     let user_id = userInfo.userId;
 
-    let id = req.query.id;
-
+    let {id, page, rows} = req.query;
     let sql = "";
     // if(!!id){
     //     sql = `SELECT author_id, content, title, id, create_time FROM artical WHERE id = ${id}`
@@ -42,7 +41,8 @@ router.get("/", function(req, res, next){
         on a.author_id = b.user_id 
         WHERE id = ${id}`
     } else {
-        sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id`
+        let start = (page-1) * rows
+        sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id LIMIT ${start},${rows}`
     }
 
     connection.query(sql, function (err,result) {
