@@ -42,7 +42,7 @@ router.get("/", function(req, res, next){
         WHERE id = ${id}`
     } else {
         let start = (page-1) * rows
-        sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id LIMIT ${start},${rows}`
+        sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id  ORDER BY create_time desc LIMIT ${start},${rows}`
     }
 
     connection.query(sql, function (err,result) {

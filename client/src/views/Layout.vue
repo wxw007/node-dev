@@ -3,7 +3,8 @@
         <header-base></header-base>
         <div class="container">
             <nav-base class="nav"></nav-base>
-            <div class="content">
+            <div class="content-wrap">
+                <div class="content">
                 <keep-alive>
                     <transition name="fade-transform" mode="out-in">
                         <router-view v-if="$route.meta.keepAlive">
@@ -19,6 +20,8 @@
                         </router-view>
                     </transition> -->
             </div>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -57,9 +60,11 @@ export default {
     float: left;
     margin-top: 20px;
 }
+.content-wrap{
+    width: 100%;
+    // overflow: auto;
+}
 .content {
-    overflow: auto;
-    height: calc(100vh - 110px);
     width: 900px;
     margin: 0 auto;
     position: relative;

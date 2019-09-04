@@ -6,4 +6,9 @@
 <script>
 export default {};
 </script>
+<style lang="less">
+  *{
+    font-family: "Microsoft YaHei"
+  }
+</style>
 

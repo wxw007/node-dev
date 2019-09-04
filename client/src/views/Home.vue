@@ -11,17 +11,23 @@
                 >
                     <el-timeline-item
                         v-for="(item, index) in pageList"
-                        timestamp="2018/4/3"
                         placement="top"
                         :key="index"
                         color="rgb(81, 174, 250)"
                     >
                         <el-card class="recommend-content-item">
                             <div class="content" @click="gotoDetail(item.id)">
-                                <h3>{{item.title}}</h3>
+                                <div class="artical-title">
+                                    {{item.title}}
+                                    <el-tag size="mini">前端</el-tag>
+                                    <el-tag size="mini" type="success">vue</el-tag>
+                                    <el-tag size="mini" type="warning">js</el-tag>
+                                    <!-- <el-tag size="mini" type="warning">标签四</el-tag>
+                                    <el-tag size="mini" type="danger">标签五</el-tag> -->
+                                </div>
                                 <p
                                     class="author"
-                                >{{item.nick_name}} 提交于 {{item.create_time | formatDate}}</p>
+                                ><span class="nick-name">{{item.nick_name}}</span> 提交于 <span class="create-time">{{item.create_time | formatDate}}</span></p>
                             </div>
                             <div class="operator">
                                 <span>
@@ -35,7 +41,7 @@
                                 </span>
                                 <img :src="imgUrl" alt />
                             </div>
-                            <div class="reply-box">
+                            <!-- <div class="reply-box">
                                 <div class="reply-list">
                                     <div class="reply-item">
                                         <span class="reply-name">小不点</span> :
@@ -47,23 +53,35 @@
                                             class="reply-content"
                                         >这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容</span>
                                     </div>
+                                    
                                     <div class="reply-item">
-                                        <span class="reply-name">小不点</span> :
-                                        <span class="reply-content">这是回复内容内容这是回复内容内容</span>
+                                        <span class="reply-name">大地瓜</span>
+                                        <span style="margin: 0 5px; color: #333">回复</span>
+                                        <span class="reply-name">小不点</span>
+                                        :
+                                        <span
+                                            class="reply-content"
+                                        >这是回复内容内容这是回复内容内容</span>
                                     </div>
                                 </div>
                                 <div class="reply-input">
                                     <el-input
                                         type="textarea"
                                         autosize
-                                        placeholder="请输入回复内容..."
+                                        placeholder="说点什么吧..."
                                         v-model="item.replyContent"
+                                        @focus="focusHandle(item)"
+                                        @blur="blurHandle(item)"
                                     ></el-input>
                                 </div>
-                                <div class="reply-btn">
-                                  <el-button size="mini" type="primary">回复</el-button>
+                                <div class="reply-btn" v-if="item.replyArticalActive">
+                                    <el-button
+                                        size="mini"
+                                        type="primary"
+                                        @click="submitReplyArtical"
+                                    >提交回复</el-button>
                                 </div>
-                            </div>
+                            </div> -->
                         </el-card>
                     </el-timeline-item>
                 </el-timeline>
@@ -115,6 +133,7 @@ Number.prototype.formatDate = function() {
     return ds;
 };
 import { getArtical } from "api/index";
+import { setTimeout } from "timers";
 export default {
     name: "home",
     data() {
@@ -155,7 +174,8 @@ export default {
 
         gotoDetail(id) {
             this.$router.push("/layout/detail/" + id);
-        }
+        },
+      
     }
 };
 </script>
@@ -224,22 +244,40 @@ export default {
                 }
             }
             .reply-name {
-                color: #333;
+                color: rgb(38, 62, 116);
             }
             .reply-input {
                 margin-top: 15px;
             }
-            .reply-btn{
-              overflow: hidden;
-              padding-top: 8px;
-              .el-button{
-                float: right;
-              }
+            .reply-btn {
+                overflow: hidden;
+                padding-top: 8px;
+                .el-button {
+                    float: right;
+                }
             }
         }
     }
 }
+.artical-title {
+    font-weight: bold;
+    font-size: 20px;
+    .el-tag {
+        font-weight: normal;
+        margin: 0 5px;
+    }
+}
 .author {
+  margin-top: 5px;
     color: #aaa;
 }
+.nick-name{
+  color: rgb(99, 149, 241);
+}
+.create-time{
+  color: rgb(71, 144, 238);
+  font-size: 12px;
+}
+
+
 </style>

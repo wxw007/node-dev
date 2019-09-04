@@ -1,14 +1,17 @@
 <template>
   <div class="nav">
+    <div class="nav-item write" style="margin-bottom: 20px" @click="goto('/articaledit/new')">
+      <i class="el-icon-edit-outline" ></i> 写文章
+    </div>
     <div class="nav-item" @click="goto('/')">
       <i class="el-icon-house" ></i> 首页
     </div>
     <div class="nav-item" @click="goto('/work-diary')">
       <i class="el-icon-edit-outline"></i> 工作日志
     </div>
-    <div class="nav-item disabled">
+    <!-- <div class="nav-item disabled">
       <i class="el-icon-reading"></i> 实用好文
-    </div>
+    </div> -->
     <div class="nav-item disabled">
       <i class="el-icon-edit"></i> 我的笔记
     </div>
@@ -33,6 +36,9 @@ export default {
 <style lang="less" scoped>
 .nav {
   width: 120px;
+  position: fixed;
+  left:calc((100vw - 900px) / 4 - 50px);
+  top: 100px;
 
   .nav-item {
     position: relative;
@@ -61,6 +67,14 @@ export default {
     
   }
   }
-  
+  .nav-item.write{
+  background: rgb(78, 154, 255);
+  color: #fff;
+  box-shadow: 0 0 8px rgb(127, 184, 248);
+  i{
+    color: #fff;
+    opacity: 1;
+  }
+}
 }
 </style>

@@ -145,6 +145,7 @@ export default {
 }
 /deep/.ql-toolbar.ql-snow + .ql-container.ql-snow {
     background: #fff;
+    height:calc(100vh - 180px - 150px)
 }
 /deep/.ql-snow .ql-tooltip.ql-flip {
     left: 0 !important;

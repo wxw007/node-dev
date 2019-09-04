@@ -84,6 +84,7 @@
         </g>
       </svg>
     </div>
+    
     <div class="user-info" v-if="isLogin">
       <span>
         <img v-if="avatarUrl" class="avatar" :src="avatarUrl" alt />
@@ -196,6 +197,15 @@ export default {
       }
     }
   }
+}
+.middle-box{
+  width: 700px;
+  margin: 0 auto;
+  overflow: hidden;
+  .el-button{
+  float: right;
+}
+
 }
 
 .colorful {
