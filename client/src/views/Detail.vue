@@ -11,48 +11,49 @@
         <div class="reply-box">
             <div class="reply-title">评论区</div>
             <div class="reply-list">
-                <div class="reply-item">
-                    <span class="reply-name">小不点</span> :
-                    <span class="reply-content">这是回复内容内容这是回复内容内容</span>
+                <div class="reply-item" v-for="(item, index) in replyList" :key="index">
+                    <span class="reply-name">{{item.nick_name}}</span> :
+                    <span class="reply-content">{{item.content}}</span>
+                    <div class="children-reply">
+                        <div class="children-reply-item" v-for="(replyChild, replyIndex) in item.children" :key="replyIndex">
+                            <span class="reply-name">{{replyChild.nick_name}}</span>
+                            <span style="margin: 0 5px; color: #333">回复</span>
+                            <span class="reply-name">{{replyChild.parentName}}</span>
+                            :
+                            <span
+                                class="reply-content"
+                            >{{replyChild.content}}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="reply-item">
-                    <span class="reply-name">小不点</span> :
-                    <span
-                        class="reply-content"
-                    >这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容这是回复内容内容</span>
-                </div>
-
-                <div class="reply-item">
-                    <span class="reply-name">大地瓜</span>
-                    <span style="margin: 0 5px; color: #333">回复</span>
-                    <span class="reply-name">小不点</span>
-                    :
-                    <span class="reply-content">这是回复内容内容这是回复内容内容</span>
-                </div>
+                
             </div>
             <div class="reply-input">
                 <el-input
                     type="textarea"
+                    v-model="replyContent"
                     autosize
                     placeholder="说点什么吧..."
-                    @focus="focusHandle(item)"
-                    @blur="blurHandle(item)"
+                    @focus="focusHandle"
+                    @blur="blurHandle"
                 ></el-input>
             </div>
             <!-- <div class="reply-btn" v-if="item.replyArticalActive">
                 <el-button size="mini" type="primary" @click="submitReplyArtical">提交回复</el-button>
-            </div> -->
+            </div>-->
         </div>
     </div>
 </template>
 <script>
-import { getArtical } from "api/index";
+import { getArtical, getReply } from "api/index";
 import formater from "util/format.js";
 export default {
     data() {
         return {
             id: null,
-            artical: {}
+            artical: {},
+            replyContent: "",
+            replyList: [],
         };
     },
     created() {
@@ -68,6 +69,7 @@ export default {
         initData() {
             this.id = this.$route.params.id - 0;
             this.getArticalData();
+            this.getReply();
         },
         // 获取文章数据
         getArticalData() {
@@ -78,7 +80,16 @@ export default {
                 }
             });
         },
-          //
+        // 获取文章评论
+        getReply() {
+             getReply({ id: this.id }).then(res => {
+                let data = res.data;
+                if (data.code === 0) {
+                    this.replyList = data.content;
+                }
+            });
+        },
+        //
         focusHandle(item) {
             this.$set(item, "replyArticalActive", true);
         },
@@ -114,6 +125,7 @@ export default {
 }
 
 /deep/.content {
+    font-size: 14px;
     color: #666;
     p {
         // margin:15px 0 ;
@@ -128,9 +140,9 @@ export default {
     cursor: default;
     margin-top: 10px;
     background: #fff;
-    padding:10px 0 50px 0;
+    padding: 10px 0 50px 0;
 
-    .reply-title{
+    .reply-title {
         border-bottom: 1px solid #ddd;
         margin-bottom: 5px;
         padding: 5px 0;
@@ -143,7 +155,7 @@ export default {
         color: #999;
         padding: 5px;
         .reply-item {
-            margin: 5px 10px;
+            margin: 5px 10px 15px 10px;
         }
     }
     .reply-name {
@@ -160,6 +172,12 @@ export default {
         .el-button {
             float: right;
         }
+    }
+    .children-reply {
+        background: #f2f2f2;
+        box-sizing: border-box;
+        padding: 5px 10px;
+        margin:5px 0;
     }
 }
 </style>

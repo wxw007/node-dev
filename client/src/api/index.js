@@ -113,3 +113,8 @@ export const submitArtical = params => {
 export const updateArtical = params => {
     return instance.post('/updateArtical', params)
 }
+
+// 获取评论
+export const getReply = params => {
+    return instance.get('/getReply', {params})
+}

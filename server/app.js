@@ -15,6 +15,7 @@ var submitWorkDiaryRouter = require('./routes/submitWorkDiary');
 var updateArticalRouter = require('./routes/updateArtical');
 var getWorkDiaryRouter = require('./routes/getWorkDiary');
 var getArticalRouter = require('./routes/getArtical');
+var getReplyRouter = require('./routes/getReply');
 
 var app = express();
 
@@ -59,6 +60,7 @@ app.use('/updateArtical', updateArticalRouter);
 app.use('/submitWorkDiary', submitWorkDiaryRouter);
 app.use('/getWorkDiary', getWorkDiaryRouter);
 app.use('/getArtical', getArticalRouter);
+app.use('/getReply', getReplyRouter);
 
 
 // catch 404 and forward to error handler
