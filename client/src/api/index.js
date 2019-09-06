@@ -118,3 +118,13 @@ export const updateArtical = params => {
 export const getReply = params => {
     return instance.get('/getReply', {params})
 }
+
+// 提交评论
+export const submitReply = params => {
+    return instance.post('/submitReply', params)
+}
+
+// 设置文章公开和加密
+export const submitIsOpen = params => {
+    return instance.post('/submitIsOpen', params)
+}

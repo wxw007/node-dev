@@ -32,46 +32,19 @@ router.post('/', function (req, res, next) {
   // 解析 token
   let userInfo = tokenFn.parseToken(token);
 
-  let author_id = userInfo.userId;
-  let {content, title, is_open} = req.body;
-  let create_time = Date.now();
+  let {is_open, artical_id} = req.body;
 
-  if(!title){
-    res.json({code: -1, message: "标题不能为空", content: ""})
-    return false
-  }
-  if(!content){
-    res.json({code: -1, message: "内容不能为空", content: ""})
-    return false
-  }
-
-  //转码
-function html_encode(str)
-{
-    var s = "";
-    if (str.length == 0) return "";
-    s = str.replace(/&/g, "&amp;");
-    s = s.replace(/</g, "&lt;");
-    s = s.replace(/>/g, "&gt;");
-    s = s.replace(/ /g, "&nbsp;");
-    s = s.replace(/\'/g, "&#39;");
-    s = s.replace(/\"/g, "&quot;");
-    s = s.replace(/\n/g, "<br/>");
-    return s;
-}
-// content = html_encode(content)
-
-  
 
   // 连接数据库 
   
-  let insertSql = `INSERT INTO artical (author_id, content, title, create_time, is_open) VALUE ('${author_id}', '${content}', '${title}', '${create_time}', ${is_open})`;
-  connection.query(insertSql, function (err, result) {
+//   let updateSql = `INSERT INTO artical (author_id, content, title, create_time) VALUE ('${author_id}', '${content}', '${title}', '${create_time}')`;
+  let updateSql = `UPDATE artical SET content = '${content}', title = '${title}' WHERE id = ${id}`;
+  connection.query(updateSql, function (err, result) {
     if (err) {
       console.log('[SELECT ERROR]:', err.message);
       res.json({
         code: -1,
-        message: "发布失败",
+        message: "操作失败",
         content: null
       })
       return false
@@ -79,7 +52,7 @@ function html_encode(str)
       console.log('result: ', result)
       res.json({
         code: 0,
-        message: "添加成功",
+        message: "操作成功",
         content: ""
       })
       return false

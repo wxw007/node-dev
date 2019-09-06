@@ -12,10 +12,10 @@
     <!-- <div class="nav-item disabled">
       <i class="el-icon-reading"></i> 实用好文
     </div> -->
-    <div class="nav-item disabled">
-      <i class="el-icon-edit"></i> 我的笔记
+    <div class="nav-item" @click="goto('/my-artical')">
+      <i class="el-icon-edit"></i> 我的文章
     </div>
-    <div class="nav-item disabled">
+    <div class="nav-item">
       <i class="el-icon-star-off"></i> 我的收藏
     </div>
     <div class="nav-item disabled">

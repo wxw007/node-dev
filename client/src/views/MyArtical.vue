@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <div class="recommend">
+        <div class="recommend" v-if="pageList.length>0">
             <div class="title">最新动态</div>
             <div class="recommend-content">
                 <el-timeline
@@ -17,18 +17,32 @@
                         color="rgb(81, 174, 250)"
                     >
                         <el-card class="recommend-content-item">
-                            <div class="content" @click="gotoDetail(item.id)">
+                            <span class="open-switch">
+                                <el-tooltip content="是否公开" placement="top">
+                                <el-switch
+                                    v-model="item.is_open"
+                                    active-color="#13ce66"
+                                    inactive-color="#bdbaba"
+                                    @change="((val)=>{switchChange(val, item, index)})"
+                                ></el-switch>
+                                </el-tooltip>
+                            </span>
+                            <div class="content">
                                 <div class="artical-title">
-                                    {{item.title}}
+                                    <span
+                                        class="title-text"
+                                        @click="gotoDetail(item.id)"
+                                    >{{item.title}}</span>
                                     <el-tag size="mini">前端</el-tag>
                                     <el-tag size="mini" type="success">vue</el-tag>
                                     <el-tag size="mini" type="warning">js</el-tag>
                                     <!-- <el-tag size="mini" type="warning">标签四</el-tag>
-                                    <el-tag size="mini" type="danger">标签五</el-tag> -->
+                                    <el-tag size="mini" type="danger">标签五</el-tag>-->
                                 </div>
-                                <p
-                                    class="author"
-                                ><span class="nick-name">{{item.nick_name}}</span> 提交于 <span class="create-time">{{item.create_time | formatDate}}</span></p>
+                                <p class="author" @click="gotoDetail(item.id)">
+                                    <span class="nick-name">{{item.nick_name}}</span> 提交于
+                                    <span class="create-time">{{item.create_time | formatDate}}</span>
+                                </p>
                             </div>
                             <div class="operator">
                                 <span>
@@ -47,6 +61,7 @@
                 </el-timeline>
             </div>
         </div>
+        <div class="no-data" v-else>暂无相关数据 嘻嘻！</div>
     </div>
 </template>
 
@@ -92,7 +107,7 @@ Number.prototype.formatDate = function() {
     }
     return ds;
 };
-import { getArtical } from "api/index";
+import { getArtical, submitIsOpen } from "api/index";
 import { setTimeout } from "timers";
 export default {
     name: "home",
@@ -103,7 +118,7 @@ export default {
                 rows: 20,
                 page: 1
             },
-            noData:false,
+            noData: false,
             imgUrl:
                 "https://hupimao008.oss-cn-shanghai.aliyuncs.com/7f106aa0-bab5-11e9-a2da-75d4286e52be.jpeg"
         };
@@ -120,17 +135,17 @@ export default {
         // 获取文章数据
         getArticalData() {
             let params = this.params;
-            params.type = "open"
-            getArtical(params).then(res => {
-                let data = res.data;
-                if (data.code === 0) {
-                    if(data.content.length === 0){
-                        this.noData = true;
-                        return
+            (params.type = "self"),
+                getArtical(params).then(res => {
+                    let data = res.data;
+                    if (data.code === 0) {
+                        if (data.content.length === 0) {
+                            this.noData = true;
+                            return;
+                        }
+                        this.pageList = this.pageList.concat(data.content);
                     }
-                    this.pageList = this.pageList.concat(data.content);
-                }
-            });
+                });
         },
         // 滚动触底 加载更多
         load() {
@@ -141,7 +156,20 @@ export default {
         gotoDetail(id) {
             this.$router.push("/layout/detail/" + id);
         },
-      
+
+        // 设置公开和加密
+        switchChange(val, item, index) {
+            console.log(val)
+            let params = {};
+            params.is_open = val;
+            params.artical_id = item.artical_id;
+            submitIsOpen(params).then(res => {
+                if(res.data.code === 0){
+
+                }
+            })
+
+        }
     }
 };
 </script>
@@ -169,9 +197,21 @@ export default {
             &:hover {
                 top: -3px;
             }
+            .open-switch {
+                position: absolute;
+                right: 10px;
+                top: 22px;
+                color: #aaa;
+                font-size: 12px;
+            }
         }
         .content {
-            cursor: pointer;
+            .title-text {
+                cursor: pointer;
+            }
+            .author {
+                cursor: pointer;
+            }
             .content-detail {
                 color: #777;
                 margin-top: 10px;
@@ -234,16 +274,19 @@ export default {
     }
 }
 .author {
-  margin-top: 5px;
+    margin-top: 5px;
     color: #aaa;
 }
-.nick-name{
-  color: rgb(99, 149, 241);
+.nick-name {
+    color: rgb(99, 149, 241);
 }
-.create-time{
-  color: rgb(71, 144, 238);
-  font-size: 12px;
+.create-time {
+    color: rgb(71, 144, 238);
+    font-size: 12px;
 }
-
-
+.no-data {
+    text-align: center;
+    color: #aaa;
+    padding-top: 50px;
+}
 </style>

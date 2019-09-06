@@ -3,6 +3,10 @@
         <div class="title require">
             <el-input v-model="title" placeholder="请输入标题(必填)" require></el-input>
         </div>
+        <div class="title require">
+            <el-radio v-model="is_open" label="1">公开</el-radio>
+            <el-radio v-model="is_open" label="0">加密</el-radio>
+        </div>
         <div class="operation">
             <el-button
                 style="float: right;margin-top: 8px;margin-right: 10px; font-size: 14px;"
@@ -37,12 +41,13 @@ export default {
             editorOption: {},
             title: "",
             editId: null,
+            is_open: '1',
         };
     },
     computed: {
         editor() {
             return this.$refs.myQuillEditor.quill;
-        },
+        }
     },
     created() {
         this.initData();
@@ -85,6 +90,7 @@ export default {
         submit() {
             let params = {};
             params.content = this.content;
+            params.is_open = this.is_open - 0;
             params.title = this.title.trim();
             if (!this.title) {
                 this.$message.error("请填写标题");
@@ -94,7 +100,7 @@ export default {
                 this.$message.error("请填写内容");
                 return;
             }
-            if (this.editId && this.editId!=='new') {
+            if (this.editId && this.editId !== "new") {
                 params.id = this.editId;
                 this.updateArtical(params);
             } else {
@@ -110,6 +116,7 @@ export default {
                             type: "success",
                             message: "发布成功"
                         });
+                        this.$router.push('/')
                     } else {
                         this.$message.error(res.data.message);
                     }
@@ -126,6 +133,7 @@ export default {
                             type: "success",
                             message: "更新成功"
                         });
+                        this.$router.push('/')
                         this.initData();
                     } else {
                         this.$message.error(res.data.message);
@@ -145,7 +153,7 @@ export default {
 }
 /deep/.ql-toolbar.ql-snow + .ql-container.ql-snow {
     background: #fff;
-    height:calc(100vh - 180px - 150px)
+    height: calc(100vh - 180px - 150px);
 }
 /deep/.ql-snow .ql-tooltip.ql-flip {
     left: 0 !important;

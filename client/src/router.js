@@ -7,6 +7,7 @@ import Home from './views/Home.vue'
 import Detail from './views/Detail.vue'
 import articalEdit from './views/articalEdit.vue'
 import WorkDiary from './views/WorkDiary.vue'
+import MyArtical from './views/MyArtical.vue'
 
 Vue.use(Router)
 
@@ -45,9 +46,15 @@ export default new Router({
         },
         {
           path: '/layout/work-diary',
-          name: 'WorkDiary',
+          name: 'workDiary',
           component: WorkDiary,
           alias: '/work-diary'
+        },
+        {
+          path: '/layout/my-artical',
+          name: 'myArtical',
+          component: MyArtical,
+          alias: '/my-artical'
         },
       ]
     },
