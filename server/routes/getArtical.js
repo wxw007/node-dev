@@ -78,7 +78,7 @@ router.get("/", function (req, res, next) {
     } else {
         let start = (page - 1) * rows;
         if (type === "open") {
-            sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, a.is_open, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id WHERE is_open = 1 ORDER BY create_time desc LIMIT ${start},${rows}`
+            sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, a.is_open, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id WHERE is_open = 1 ORDER BY update_time desc LIMIT ${start},${rows}`
 
         } else if (type === "self") {
             sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, a.is_open, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id WHERE author_id = '${user_id}' ORDER BY create_time desc LIMIT ${start},${rows}`
@@ -103,16 +103,6 @@ router.get("/", function (req, res, next) {
         })
 
     }
-
-    // connection.query(sql, function (err,result) {
-    //     if(err){
-    //         console.log('[SELECT ERROR]1111:',err.message);
-    //         res.json({code: -1, message: "请求失败", content: null})
-    //     } else {
-    //         res.json({code: 0, message: "请求成功", content: result})
-
-    //     }
-    // })
 })
 
 module.exports = router;

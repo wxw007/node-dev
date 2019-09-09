@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="recommend" v-if="pageList.length>0">
-            <div class="title">最新动态</div>
+            <div class="title">我的文章列表</div>
             <div class="recommend-content">
                 <el-timeline
                     :infinite-scroll-disabled="noData"
@@ -21,6 +21,8 @@
                                 <el-tooltip content="是否公开" placement="top">
                                 <el-switch
                                     v-model="item.is_open"
+                                    :active-value="1"
+                                    :inactive-value="0"
                                     active-color="#13ce66"
                                     inactive-color="#bdbaba"
                                     @change="((val)=>{switchChange(val, item, index)})"
@@ -162,10 +164,17 @@ export default {
             console.log(val)
             let params = {};
             params.is_open = val;
-            params.artical_id = item.artical_id;
+            params.id = item.id;
             submitIsOpen(params).then(res => {
                 if(res.data.code === 0){
-
+                    this.$message({
+                        type: "success",
+                        message: "操作成功"
+                    })
+                    this.$set(this.pageList, "is_open", val)
+                } else {
+                    this.$message.error(res.data.message)
+                    this.$set(this.pageList, "is_open", item.is_open)
                 }
             })
 

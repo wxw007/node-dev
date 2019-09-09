@@ -18,6 +18,7 @@ var getArticalRouter = require('./routes/getArtical');
 var getReplyRouter = require('./routes/getReply');
 var submitReplyRouter = require('./routes/submitReply');
 var submitIsOpenRouter = require('./routes/submitIsOpen');
+var submitCollectRouter = require('./routes/submitCollect');
 
 var app = express();
 
@@ -65,6 +66,7 @@ app.use('/getArtical', getArticalRouter);
 app.use('/getReply', getReplyRouter);
 app.use('/submitReply', submitReplyRouter);
 app.use('/submitIsOpen', submitIsOpenRouter);
+app.use('/submitCollect', submitCollectRouter);
 
 
 // catch 404 and forward to error handler

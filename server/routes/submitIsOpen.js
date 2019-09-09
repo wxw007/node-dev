@@ -31,17 +31,13 @@ router.post('/', function (req, res, next) {
 
   // 解析 token
   let userInfo = tokenFn.parseToken(token);
+  let user_id = userInfo.usesr_id;
 
-  let {is_open, artical_id} = req.body;
-
-
-  // 连接数据库 
-  
-//   let updateSql = `INSERT INTO artical (author_id, content, title, create_time) VALUE ('${author_id}', '${content}', '${title}', '${create_time}')`;
-  let updateSql = `UPDATE artical SET content = '${content}', title = '${title}' WHERE id = ${id}`;
-  connection.query(updateSql, function (err, result) {
+  let { is_open, id } = req.body;
+  let sql1 = `SELECT author_id FROM artical WHERE id = ${id}`;
+  connection.query(sql1, (err, result) => {
     if (err) {
-      console.log('[SELECT ERROR]:', err.message);
+      console.log('错误:', err.message);
       res.json({
         code: -1,
         message: "操作失败",
@@ -50,14 +46,47 @@ router.post('/', function (req, res, next) {
       return false
     } else {
       console.log('result: ', result)
-      res.json({
-        code: 0,
-        message: "操作成功",
-        content: ""
-      })
+      let artical = JSON.parse(JSON.stringify(result));
+      if (artical.author_id === user_id) {
+        let update_time = Date.now();
+        let updateSql = `UPDATE artical SET is_open = ${is_open}, update_time = ${update_time} WHERE id = ${id}`;
+        connection.query(updateSql, function (err, result) {
+          if (err) {
+            console.log('[SELECT ERROR]:', err.message);
+            res.json({
+              code: -1,
+              message: "操作失败",
+              content: null
+            })
+            return false
+          } else {
+            console.log('result: ', result)
+            res.json({
+              code: 0,
+              message: "操作成功",
+              content: ""
+            })
+            return false
+          }
+        });
+
+      } else {
+        res.json({
+          code: -1,
+          message: "操作失败",
+          content: null
+        })
+      }
+
       return false
     }
-  });
+  })
+
+
+  // 连接数据库 
+
+  //   let updateSql = `INSERT INTO artical (author_id, content, title, create_time) VALUE ('${author_id}', '${content}', '${title}', '${create_time}')`;
+  
 });
 
 module.exports = router;

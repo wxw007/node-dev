@@ -31,11 +31,11 @@
                                 ><span class="nick-name">{{item.nick_name}}</span> 提交于 <span class="create-time">{{item.create_time | formatDate}}</span></p>
                             </div>
                             <div class="operator">
-                                <span>
+                                <span @click="submitCollect(item, index, 1)" v-if="!item.is_collect">
                                     收藏
                                     <i class="el-icon-star-off"></i>
                                 </span>
-                                <!-- <span>收藏 <i class="el-icon-star-on"></i></span> -->
+                                <span @click="submitCollect(item, index, 0)" v-else>已收藏 <i class="el-icon-star-on"></i></span>
                                 <span>
                                     点赞
                                     <i class="el-icon-goblet"></i>
@@ -92,8 +92,7 @@ Number.prototype.formatDate = function() {
     }
     return ds;
 };
-import { getArtical } from "api/index";
-import { setTimeout } from "timers";
+import { getArtical, submitCollect } from "api/index";
 export default {
     name: "home",
     data() {
@@ -141,6 +140,21 @@ export default {
         gotoDetail(id) {
             this.$router.push("/layout/detail/" + id);
         },
+
+        // 收藏或者取消收藏
+        submitCollect(item, index, val) {
+            let params = {};
+            params.id = item.id;
+            params.is_collect = val;
+            submitCollect(params).then(res => {
+                if(res.data.code === 0){
+                    this.$set(this.pageList[index], "is_collect", val)
+                } else {
+                    this.$set(this.pageList[index], "is_collect", item.is_collect)
+                    this.$message.error(res.data.message)
+                }
+            })
+        }
       
     }
 };
