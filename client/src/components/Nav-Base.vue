@@ -15,7 +15,7 @@
     <div class="nav-item" @click="goto('/my-artical')">
       <i class="el-icon-edit"></i> 我的文章
     </div>
-    <div class="nav-item">
+    <div class="nav-item" @click="goto('/my-collection')">
       <i class="el-icon-star-off"></i> 我的收藏
     </div>
     <div class="nav-item disabled">

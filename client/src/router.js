@@ -8,6 +8,7 @@ import Detail from './views/Detail.vue'
 import articalEdit from './views/articalEdit.vue'
 import WorkDiary from './views/WorkDiary.vue'
 import MyArtical from './views/MyArtical.vue'
+import MyCollection from './views/MyCollection.vue'
 
 Vue.use(Router)
 
@@ -55,6 +56,12 @@ export default new Router({
           name: 'myArtical',
           component: MyArtical,
           alias: '/my-artical'
+        },
+        {
+          path: '/layout/my-collection',
+          name: 'myCollection',
+          component: MyCollection,
+          alias: '/my-collection'
         },
       ]
     },

@@ -24,23 +24,38 @@
                                     <el-tag size="mini" type="success">vue</el-tag>
                                     <el-tag size="mini" type="warning">js</el-tag>
                                     <!-- <el-tag size="mini" type="warning">标签四</el-tag>
-                                    <el-tag size="mini" type="danger">标签五</el-tag> -->
+                                    <el-tag size="mini" type="danger">标签五</el-tag>-->
                                 </div>
-                                <p
-                                    class="author"
-                                ><span class="nick-name">{{item.nick_name}}</span> 提交于 <span class="create-time">{{item.create_time | formatDate}}</span></p>
+                                <p class="author">
+                                    <span class="nick-name">{{item.nick_name}}</span> 提交于
+                                    <span class="create-time">{{item.create_time | formatDate}}</span>
+                                </p>
                             </div>
                             <div class="operator">
-                                <span @click="submitCollect(item, index, 1)" v-if="!item.is_collect">
+                                <span
+                                    @click="submitCollect(item, index, 1)"
+                                    v-if="!item.is_collection"
+                                >
                                     收藏
-                                    <i class="el-icon-star-off"></i>
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>
                                 </span>
-                                <span @click="submitCollect(item, index, 0)" v-else>已收藏 <i class="el-icon-star-on"></i></span>
-                                <span>
+                                <span @click="submitCollect(item, index, 0)" v-else>
+                                    已收藏
+                                    <i class="fa fa-star" aria-hidden="true" style="color: rgb(74, 171, 250);"></i>
+                                </span>
+                                <span v-if="!item.thumbs">
                                     点赞
-                                    <i class="el-icon-goblet"></i>
+                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                                 </span>
-                                <img :src="imgUrl" alt />
+                                <span v-else>
+                                    已点赞
+                                    <i class="fa fa-thumbs-up" aria-hidden="true" style="color: rgb(74, 171, 250);"></i>
+                                </span>
+                                <div class="avatar-group">
+                                    <img :src="imgUrl" alt />
+                                    <img :src="imgUrl" alt />
+                                    <img :src="imgUrl" alt />
+                                </div>
                             </div>
                         </el-card>
                     </el-timeline-item>
@@ -102,7 +117,7 @@ export default {
                 rows: 20,
                 page: 1
             },
-            noData:false,
+            noData: false,
             imgUrl:
                 "https://hupimao008.oss-cn-shanghai.aliyuncs.com/7f106aa0-bab5-11e9-a2da-75d4286e52be.jpeg"
         };
@@ -119,13 +134,13 @@ export default {
         // 获取文章数据
         getArticalData() {
             let params = this.params;
-            params.type = "open"
+            params.type = "open";
             getArtical(params).then(res => {
                 let data = res.data;
                 if (data.code === 0) {
-                    if(data.content.length === 0){
+                    if (data.content.length === 0) {
                         this.noData = true;
-                        return
+                        return;
                     }
                     this.pageList = this.pageList.concat(data.content);
                 }
@@ -147,15 +162,29 @@ export default {
             params.id = item.id;
             params.is_collect = val;
             submitCollect(params).then(res => {
-                if(res.data.code === 0){
-                    this.$set(this.pageList[index], "is_collect", val)
+                if (res.data.code === 0) {
+                    this.$set(this.pageList[index], "is_collection", val);
+                    if (val) {
+                        this.$message({
+                            type: "success",
+                            message: "收藏成功"
+                        });
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: "已取消收藏"
+                        });
+                    }
                 } else {
-                    this.$set(this.pageList[index], "is_collect", item.is_collect)
-                    this.$message.error(res.data.message)
+                    this.$set(
+                        this.pageList[index],
+                        "is_collect",
+                        item.is_collect
+                    );
+                    this.$message.error(res.data.message);
                 }
-            })
+            });
         }
-      
     }
 };
 </script>
@@ -248,16 +277,28 @@ export default {
     }
 }
 .author {
-  margin-top: 5px;
+    margin-top: 5px;
     color: #aaa;
 }
-.nick-name{
-  color: rgb(99, 149, 241);
+.nick-name {
+    color: rgb(99, 149, 241);
 }
-.create-time{
-  color: rgb(71, 144, 238);
-  font-size: 12px;
+.create-time {
+    color: rgb(71, 144, 238);
+    font-size: 12px;
 }
-
-
+.el-icon-star-on {
+    color: rgb(114, 184, 250);
+    font-size: 18px;
+    vertical-align: middle;
+    margin-top: -4px;
+}
+.avatar-group{
+    display: inline-block;
+    padding-left: 15px;
+    img{
+        margin-left: -10px;
+        
+    }
+}
 </style>

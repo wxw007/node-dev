@@ -38,7 +38,7 @@ router.post('/', function (req, res, next) {
   if(is_collect){
     sql = `INSERT INTO collection ( artical_id, user_id, create_time) VALUE (${id}, '${user_id}', ${create_time})`
   } else {
-    sql = `DELETE FROM collection WHERE artical_id = ${id}`
+    sql = `DELETE FROM collection WHERE artical_id = ${id} AND user_id = '${user_id}'`
   }
   
   connection.query(sql, function (err, result) {

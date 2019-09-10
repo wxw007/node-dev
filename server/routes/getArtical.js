@@ -78,11 +78,12 @@ router.get("/", function (req, res, next) {
     } else {
         let start = (page - 1) * rows;
         if (type === "open") {
-            sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, a.is_open, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id WHERE is_open = 1 ORDER BY update_time desc LIMIT ${start},${rows}`
+            sql = `SELECT c.is_collection, a.author_id, a.content, a.title, a.id, a.create_time, a.is_open, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id left join collection c on c.artical_id=a.id WHERE is_open = 1 ORDER BY update_time desc LIMIT ${start},${rows}`
 
         } else if (type === "self") {
             sql = `SELECT a.author_id, a.content, a.title, a.id, a.create_time, a.is_open, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id WHERE author_id = '${user_id}' ORDER BY create_time desc LIMIT ${start},${rows}`
-
+        } else if(type === "collection") {
+            sql = `SELECT a.id, a.user_id, a.artical_id, a.create_time, a.is_collection, b.author_id, b.content, b.title, b.create_time, b.is_open FROM collection a left join artical b on a.artical_id = b.id WHERE user_id = '${user_id}'`
         }
         connection.query(sql, function (err, result) {
             if (err) {

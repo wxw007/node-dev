@@ -1,7 +1,7 @@
 <template>
     <div class="home">
-        <div class="recommend" v-if="pageList.length>0">
-            <div class="title">我的文章列表</div>
+        <div class="recommend">
+            <div class="title">我收藏的文章</div>
             <div class="recommend-content">
                 <el-timeline
                     :infinite-scroll-disabled="noData"
@@ -17,41 +17,30 @@
                         color="rgb(81, 174, 250)"
                     >
                         <el-card class="recommend-content-item">
-                            <span class="open-switch">
-                                <el-tooltip content="是否公开" placement="top">
-                                <el-switch
-                                    v-model="item.is_open"
-                                    :active-value="1"
-                                    :inactive-value="0"
-                                    active-color="#13ce66"
-                                    inactive-color="#bdbaba"
-                                    @change="((val)=>{switchChange(val, item, index)})"
-                                ></el-switch>
-                                </el-tooltip>
-                            </span>
-                            <div class="content">
+                            <div class="content" @click="gotoDetail(item.id)">
                                 <div class="artical-title">
-                                    <span
-                                        class="title-text"
-                                        @click="gotoDetail(item.id)"
-                                    >{{item.title}}</span>
+                                    {{item.title}}
                                     <el-tag size="mini">前端</el-tag>
                                     <el-tag size="mini" type="success">vue</el-tag>
                                     <el-tag size="mini" type="warning">js</el-tag>
-                                    <!-- <el-tag size="mini" type="warning">标签四</el-tag>
-                                    <el-tag size="mini" type="danger">标签五</el-tag>-->
                                 </div>
-                                <p class="author" @click="gotoDetail(item.id)">
+                                <p class="author">
                                     <span class="nick-name">{{item.nick_name}}</span> 提交于
                                     <span class="create-time">{{item.create_time | formatDate}}</span>
                                 </p>
                             </div>
                             <div class="operator">
-                                <!-- <span>
+                                <span
+                                    @click="submitCollect(item, index, 1)"
+                                    v-if="!item.is_collection"
+                                >
                                     收藏
                                     <i class="el-icon-star-off"></i>
-                                </span> -->
-                                <!-- <span>收藏 <i class="el-icon-star-on"></i></span> -->
+                                </span>
+                                <span @click="submitCollect(item, index, 0)" v-else>
+                                    已收藏
+                                    <i class="el-icon-star-on"></i>
+                                </span>
                                 <span>
                                     点赞
                                     <i class="el-icon-goblet"></i>
@@ -63,7 +52,6 @@
                 </el-timeline>
             </div>
         </div>
-        <div class="no-data" v-else>暂无相关数据 嘻嘻！</div>
     </div>
 </template>
 
@@ -109,8 +97,7 @@ Number.prototype.formatDate = function() {
     }
     return ds;
 };
-import { getArtical, submitIsOpen } from "api/index";
-import { setTimeout } from "timers";
+import { getArtical, submitCollect } from "api/index";
 export default {
     name: "home",
     data() {
@@ -137,17 +124,17 @@ export default {
         // 获取文章数据
         getArticalData() {
             let params = this.params;
-            (params.type = "self"),
-                getArtical(params).then(res => {
-                    let data = res.data;
-                    if (data.code === 0) {
-                        if (data.content.length === 0) {
-                            this.noData = true;
-                            return;
-                        }
-                        this.pageList = this.pageList.concat(data.content);
+            params.type = "collection";
+            getArtical(params).then(res => {
+                let data = res.data;
+                if (data.code === 0) {
+                    if (data.content.length === 0) {
+                        this.noData = true;
+                        return;
                     }
-                });
+                    this.pageList = this.pageList.concat(data.content);
+                }
+            });
         },
         // 滚动触底 加载更多
         load() {
@@ -159,25 +146,34 @@ export default {
             this.$router.push("/layout/detail/" + id);
         },
 
-        // 设置公开和加密
-        switchChange(val, item, index) {
-            console.log(val)
+        // 收藏或者取消收藏
+        submitCollect(item, index, val) {
             let params = {};
-            params.is_open = val;
             params.id = item.id;
-            submitIsOpen(params).then(res => {
-                if(res.data.code === 0){
-                    this.$message({
-                        type: "success",
-                        message: "操作成功"
-                    })
-                    this.$set(this.pageList, "is_open", val)
+            params.is_collect = val;
+            submitCollect(params).then(res => {
+                if (res.data.code === 0) {
+                    this.$set(this.pageList[index], "is_collection", val);
+                    if (val) {
+                        this.$message({
+                            type: "success",
+                            message: "收藏成功"
+                        });
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: "已取消收藏"
+                        });
+                    }
                 } else {
-                    this.$message.error(res.data.message)
-                    this.$set(this.pageList, "is_open", item.is_open)
+                    this.$set(
+                        this.pageList[index],
+                        "is_collect",
+                        item.is_collect
+                    );
+                    this.$message.error(res.data.message);
                 }
-            })
-
+            });
         }
     }
 };
@@ -206,21 +202,9 @@ export default {
             &:hover {
                 top: -3px;
             }
-            .open-switch {
-                position: absolute;
-                right: 10px;
-                top: 22px;
-                color: #aaa;
-                font-size: 12px;
-            }
         }
         .content {
-            .title-text {
-                cursor: pointer;
-            }
-            .author {
-                cursor: pointer;
-            }
+            cursor: pointer;
             .content-detail {
                 color: #777;
                 margin-top: 10px;
@@ -293,11 +277,10 @@ export default {
     color: rgb(71, 144, 238);
     font-size: 12px;
 }
-.no-data {
-    text-align: center;
-    color: #aaa;
-    padding-top: 50px;
+.el-icon-star-on {
+    color: rgb(114, 184, 250);
+    font-size: 18px;
+    vertical-align: middle;
+    margin-top: -4px;
 }
-
-
 </style>
