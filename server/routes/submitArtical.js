@@ -65,7 +65,7 @@ function html_encode(str)
 
   // 连接数据库 
   
-  let insertSql = `INSERT INTO artical (author_id, content, title, create_time, is_open) VALUE ('${author_id}', '${content}', '${title}', '${create_time}', ${is_open})`;
+  let insertSql = `INSERT INTO artical (author_id, content, title, create_time, is_open, update_time) VALUE ('${author_id}', '${content}', '${title}', '${create_time}', ${is_open}, '${create_time}')`;
   connection.query(insertSql, function (err, result) {
     if (err) {
       console.log('[SELECT ERROR]:', err.message);

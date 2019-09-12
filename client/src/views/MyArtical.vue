@@ -186,7 +186,7 @@ export default {
 <style lang="less" scoped>
 .recommend {
     .title {
-        position: absolute;
+        // position: absolute;
         padding-bottom: 10px;
         left: 0;
         right: 0;

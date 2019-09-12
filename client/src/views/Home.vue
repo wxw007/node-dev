@@ -51,11 +51,11 @@
                                     已点赞
                                     <i class="fa fa-thumbs-up" aria-hidden="true" style="color: rgb(74, 171, 250);"></i>
                                 </span>
-                                <div class="avatar-group">
+                                <!-- <div class="avatar-group">
                                     <img :src="imgUrl" alt />
                                     <img :src="imgUrl" alt />
                                     <img :src="imgUrl" alt />
-                                </div>
+                                </div> -->
                             </div>
                         </el-card>
                     </el-timeline-item>
@@ -192,7 +192,7 @@ export default {
 <style lang="less" scoped>
 .recommend {
     .title {
-        position: absolute;
+        // position: absolute;
         padding-bottom: 10px;
         left: 0;
         right: 0;
