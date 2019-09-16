@@ -40,16 +40,16 @@
                                     <i class="fa fa-star-o" aria-hidden="true"></i>
                                 </span>
                                 <span @click="submitCollect(item, index, 0)" v-else>
-                                    已收藏
+                                    收藏
                                     <i class="fa fa-star" aria-hidden="true" style="color: rgb(74, 171, 250);"></i>
                                 </span>
-                                <span v-if="!item.thumbs">
+                                <span v-if="!item.is_thumb_up" @click="submitThumbUp(item, index, 1)">
                                     点赞
                                     <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                                 </span>
-                                <span v-else>
-                                    已点赞
-                                    <i class="fa fa-thumbs-up" aria-hidden="true" style="color: rgb(74, 171, 250);"></i>
+                                <span v-else @click="submitThumbUp(item, index, 0)">
+                                    点赞
+                                    <i class="fa fa-thumbs-up" aria-hidden="true" style="color: #67c23a;"></i>
                                 </span>
                                 <!-- <div class="avatar-group">
                                     <img :src="imgUrl" alt />
@@ -107,7 +107,7 @@ Number.prototype.formatDate = function() {
     }
     return ds;
 };
-import { getArtical, submitCollect } from "api/index";
+import { getArtical, submitCollect, submitThumbUp } from "api/index";
 export default {
     name: "home",
     data() {
@@ -180,6 +180,31 @@ export default {
                         this.pageList[index],
                         "is_collect",
                         item.is_collect
+                    );
+                    this.$message.error(res.data.message);
+                }
+            });
+        },
+        submitThumbUp(item, index, val){
+             let params = {};
+            params.id = item.id;
+            params.is_thumb_up = val;
+            submitThumbUp(params).then(res => {
+                if (res.data.code === 0) {
+                    this.$set(this.pageList[index], "is_thumb_up", val);
+                    if (val) {
+                        this.$message({
+                            type: "success",
+                            message: "赞一个"
+                        });
+                    } else {
+                        
+                    }
+                } else {
+                    this.$set(
+                        this.pageList[index],
+                        "is_thumb_up",
+                        item.is_thumb_up
                     );
                     this.$message.error(res.data.message);
                 }

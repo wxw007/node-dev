@@ -19,14 +19,14 @@
                         <el-card class="recommend-content-item">
                             <span class="open-switch">
                                 <el-tooltip content="是否公开" placement="top">
-                                <el-switch
-                                    v-model="item.is_open"
-                                    :active-value="1"
-                                    :inactive-value="0"
-                                    active-color="#13ce66"
-                                    inactive-color="#bdbaba"
-                                    @change="((val)=>{switchChange(val, item, index)})"
-                                ></el-switch>
+                                    <el-switch
+                                        v-model="item.is_open"
+                                        :active-value="1"
+                                        :inactive-value="0"
+                                        active-color="#13ce66"
+                                        inactive-color="#bdbaba"
+                                        @change="((val)=>{switchChange(val, item, index)})"
+                                    ></el-switch>
                                 </el-tooltip>
                             </span>
                             <div class="content">
@@ -47,16 +47,14 @@
                                 </p>
                             </div>
                             <div class="operator">
-                                <!-- <span>
-                                    收藏
-                                    <i class="el-icon-star-off"></i>
-                                </span> -->
-                                <!-- <span>收藏 <i class="el-icon-star-on"></i></span> -->
                                 <span>
-                                    点赞
-                                    <i class="el-icon-goblet"></i>
+                                    收藏数
+                                    <span style="color: #4790ee">还没写</span>
                                 </span>
-                                <img :src="imgUrl" alt />
+                                <span>
+                                    点赞数
+                                    <span style="color: #4790ee">{{item.thumb_up_count}}</span>
+                                </span>
                             </div>
                         </el-card>
                     </el-timeline-item>
@@ -161,23 +159,30 @@ export default {
 
         // 设置公开和加密
         switchChange(val, item, index) {
-            console.log(val)
+            console.log(val);
             let params = {};
             params.is_open = val;
             params.id = item.id;
             submitIsOpen(params).then(res => {
-                if(res.data.code === 0){
-                    this.$message({
-                        type: "success",
-                        message: "操作成功"
-                    })
-                    this.$set(this.pageList, "is_open", val)
-                } else {
-                    this.$message.error(res.data.message)
-                    this.$set(this.pageList, "is_open", item.is_open)
-                }
-            })
+                if (res.data.code === 0) {
+                    if (val) {
+                        this.$message({
+                            type: "success",
+                            message: "已公开"
+                        });
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: "已加密"
+                        });
+                    }
 
+                    this.$set(this.pageList, "is_open", val);
+                } else {
+                    this.$message.error(res.data.message);
+                    this.$set(this.pageList, "is_open", item.is_open);
+                }
+            });
         }
     }
 };
@@ -298,6 +303,4 @@ export default {
     color: #aaa;
     padding-top: 50px;
 }
-
-
 </style>

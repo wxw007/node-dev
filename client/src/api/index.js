@@ -130,7 +130,12 @@ export const submitIsOpen = params => {
     return instance.post('/submitIsOpen', params)
 }
 
-// 
+// 收藏和取消收藏
 export const submitCollect = params => {
     return instance.post('/submitCollect', params)
+}
+
+// 点赞和取消点赞
+export const submitThumbUp = params => {
+    return instance.post('/submitThumbUp', params)
 }

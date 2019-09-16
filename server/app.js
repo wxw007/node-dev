@@ -19,6 +19,7 @@ var getReplyRouter = require('./routes/getReply');
 var submitReplyRouter = require('./routes/submitReply');
 var submitIsOpenRouter = require('./routes/submitIsOpen');
 var submitCollectRouter = require('./routes/submitCollect');
+var submitThumbUpRouter = require('./routes/submitThumbUp');
 
 var app = express();
 
@@ -67,6 +68,7 @@ app.use('/getReply', getReplyRouter);
 app.use('/submitReply', submitReplyRouter);
 app.use('/submitIsOpen', submitIsOpenRouter);
 app.use('/submitCollect', submitCollectRouter);
+app.use('/submitThumbUp', submitThumbUpRouter);
 
 
 // catch 404 and forward to error handler
