@@ -82,7 +82,7 @@ router.get("/", function (req, res, next) {
         } else if (type === "self") {
             sql = `SELECT a.author_id,a.thumb_up_list, a.title, a.id, a.create_time, a.is_open, b.nick_name, b.avatar FROM artical a left join user b on a.author_id = b.user_id WHERE author_id = '${user_id}' ORDER BY create_time desc LIMIT ${start},${rows}`
         } else if(type === "collection") {
-            sql = `SELECT a.id, a.user_id, a.thumb_up_list, a.artical_id, a.create_time, a.is_collection, b.author_id, b.content, b.title, b.create_time, b.is_open FROM collection a left join artical b on a.artical_id = b.id WHERE user_id = '${user_id}' ORDER BY update_time LIMIT ${start},${rows}`
+            sql = `SELECT a.id, a.user_id, a.artical_id, a.create_time, a.is_collection, b.thumb_up_list, b.author_id, b.content, b.title, b.create_time, b.is_open FROM collection a left join artical b on a.artical_id = b.id WHERE user_id = '${user_id}' ORDER BY update_time LIMIT ${start},${rows}`
         }
         connection.query(sql, function (err, result) {
             if (err) {
@@ -101,14 +101,11 @@ router.get("/", function (req, res, next) {
                         item.thumb_up_list = JSON.parse(item.thumb_up_list)
                     }
                     item.thumb_up_count = item.thumb_up_list.length;
-                    
-                    item.thumb_up_list.forEach(child => {
-                        if(child.indexOf(user_id)> -1){
-                            item.is_thumb_up = 1;
-                        } else {
-                            item.is_thumb_up = 0;
-                        }
-                    })
+                    if(item.thumb_up_list.indexOf(user_id)>-1){
+                        item.is_thumb_up = 1;
+                    } else {
+                        item.is_thumb_up = 0;
+                     }
                 })
                 res.json({
                     code: 0,

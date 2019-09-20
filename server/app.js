@@ -88,3 +88,6 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+//body-parser deprecated undefined extended: provide extended option app.js:27:20
+//OPTIONS /login 200 2.425 ms - 4
