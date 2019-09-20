@@ -56,8 +56,6 @@ router.post('/', function (req, res, next) {
           })
           thumb_up_list.splice(i, 1)
       }
-      console.log("点赞：",thumb_up_list)
-      console.log("id：",id)
 
       let sql2 = `UPDATE artical SET thumb_up_list='${JSON.stringify(thumb_up_list)}' WHERE id=${id}`;
       connection.query(sql2, function (err, result) {
