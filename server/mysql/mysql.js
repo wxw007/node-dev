@@ -1,16 +1,10 @@
-var connction = {};
-
-connction.mysql = {
-
-    host: "localhost", //这是数据库的地址
-
-    user: "root", //需要用户的名字
-
-    password: "123456789", //用户密码 ，如果你没有密码，直接双引号就是
-
-    database: "test1" //数据库名字
-
-} //好了，这样我们就能连接数据库了
-
-
-module.exports = connction; //用module.exports暴露出这个接口，
+const mysqlConfig= {
+    // host:'47.100.34.194',
+    host:'127.0.0.1',
+    port:'3306',
+    user:'root',
+    // password:'Wxw+123456',
+    password:'123456789',
+    database:'test1'
+}
+module.exports = mysqlConfig;

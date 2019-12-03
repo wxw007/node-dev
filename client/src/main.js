@@ -6,6 +6,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
+import hupicatUi from "hupicat-ui";
+Vue.use(hupicatUi)
+
 
 import "../public/css/common.css"
 
@@ -18,3 +21,4 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+

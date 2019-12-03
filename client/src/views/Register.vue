@@ -1,6 +1,13 @@
 <template>
     <div class="wrap">
-        <el-form class="form" ref="ruleForm" :model="form" label-width="80px" :rules="rules" status-icon>
+        <el-form
+            class="form"
+            ref="ruleForm"
+            :model="form"
+            label-width="80px"
+            :rules="rules"
+            status-icon
+        >
             <el-form-item label="账号" prop="userName">
                 <el-input v-model="form.userName"></el-input>
             </el-form-item>
@@ -42,7 +49,8 @@
     </div>
 </template>
 <script>
-import {register} from "api/index"
+import SparkMD5 from "spark-md5"
+import { register } from "api/index";
 import client from "util/oss-config";
 import uuid from "uuid";
 
@@ -126,6 +134,49 @@ export default {
         changeImg() {
             document.getElementById("file").click();
         },
+
+        // md5
+        upload2() {
+            let file = document.getElementById("file").files[0];
+            var blobSlice =
+                    File.prototype.slice ||
+                    File.prototype.mozSlice ||
+                    File.prototype.webkitSlice,
+                chunkSize = 2097152, // Read in chunks of 2MB
+                chunks = Math.ceil(file.size / chunkSize),
+                currentChunk = 0,
+                spark = new SparkMD5.ArrayBuffer(),
+                fileReader = new FileReader();
+
+            fileReader.onload = function(e) {
+                console.log("read chunk nr", currentChunk + 1, "of", chunks);
+                spark.append(e.target.result); // Append array buffer
+                currentChunk++;
+
+                if (currentChunk < chunks) {
+                    loadNext();
+                } else {
+                    console.log("finished loading");
+                    console.info("computed hash", spark.end()); // Compute hash
+                }
+            };
+
+            fileReader.onerror = function() {
+                console.warn("oops, something went wrong.");
+            };
+
+            function loadNext() {
+                var start = currentChunk * chunkSize,
+                    end =
+                        start + chunkSize >= file.size
+                            ? file.size
+                            : start + chunkSize;
+
+                fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+            }
+
+            loadNext();
+        },
         // 上传
         upload() {
             let file = document.getElementById("file").files[0];
@@ -185,16 +236,16 @@ export default {
                 if (valid) {
                     let params = this.form;
                     register(params).then(res => {
-                        if(res.data.code === 0){
+                        if (res.data.code === 0) {
                             that.$message({
                                 type: "success",
-                                message: "注册成功",
-                            })
-                            that.$router.push("login")
+                                message: "注册成功"
+                            });
+                            that.$router.push("login");
                         } else {
-                            that.$message.error(res.data.message)
+                            that.$message.error(res.data.message);
                         }
-                    })
+                    });
                 } else {
                     return false;
                 }
@@ -215,7 +266,7 @@ export default {
     height: 100vh;
     overflow: hidden;
     box-sizing: border-box;
-    
+
     &::before {
         content: "";
         -webkit-filter: blur(8px);
@@ -229,14 +280,14 @@ export default {
         right: 0;
         background: url("../../public/images/bg.jpg") no-repeat;
         background-size: cover;
-        opacity: .5;
+        opacity: 0.5;
     }
 }
 .el-form {
     width: 500px;
     margin: 100px auto 0 auto;
 }
-.el-form-item{
+.el-form-item {
     color: #fff;
 }
 .login-btn {
@@ -261,7 +312,6 @@ export default {
     border-radius: 4px;
     cursor: pointer;
 }
-.el-button{
-
+.el-button {
 }
 </style>

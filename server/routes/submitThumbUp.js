@@ -9,7 +9,7 @@ var connection = mysql.createConnection({ //创建mysql实例
   port: '3306',
   user: 'root',
   password: '123456789',
-  database: 'test1'
+  database: 'hupicat'
 });
 connection.connect();
 
