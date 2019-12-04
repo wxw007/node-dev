@@ -41,7 +41,7 @@ router.post("/", function (req, res, next) {
             1
 
 
-        let sql = `SELECT content, id FROM workDiary WHERE author_id = '${user_id}' AND create_time >= ${start} AND create_time < ${end};`
+        let sql = `SELECT content, id FROM workdiary WHERE author_id = '${user_id}' AND create_time >= ${start} AND create_time < ${end};`
         connection.query(sql, function (err, result) {
             
             

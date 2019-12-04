@@ -27,9 +27,9 @@ router.get("/", function(req, res, next){
     let sql = "";
     console.log(req.query)
     if(weekStartDate && weekEndDate){
-        sql = `SELECT create_time, content FROM workDiary WHERE author_id = '${user_id}' AND create_time >= ${weekStartDate} AND create_time <= ${weekEndDate} ORDER BY create_time DESC;`
+        sql = `SELECT create_time, content FROM workdiary WHERE author_id = '${user_id}' AND create_time >= ${weekStartDate} AND create_time <= ${weekEndDate} ORDER BY create_time DESC;`
     } else {
-        sql = `SELECT create_time, content FROM workDiary WHERE author_id = '${user_id}' ORDER BY create_time DESC;`
+        sql = `SELECT create_time, content FROM workdiary WHERE author_id = '${user_id}' ORDER BY create_time DESC;`
     }
     
     connection.query(sql, function (err,result) {

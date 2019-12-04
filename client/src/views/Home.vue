@@ -129,7 +129,6 @@ export default {
     methods: {
         // 获取文章数据
         getArticalData() {
-            debugger
             let params = this.params;
             params.type = "open";
             getArtical(params).then(res => {

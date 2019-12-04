@@ -11,8 +11,8 @@ import {
 } from 'element-ui'
 
 //基本配置常量
-// let BASE_URL = "//47.100.34.194:3000";
-let BASE_URL = "//127.0.0.1:3000";
+let BASE_URL = "//47.100.34.194:3000";
+// let BASE_URL = "//127.0.0.1:3000";
 const CONTENT_TYPE = 'application/json'
 
 //自定义请求实例  这里只能赋值静态数据
