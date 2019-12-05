@@ -155,7 +155,7 @@ export default {
         // 收藏或者取消收藏
         submitCollect(item, index, val) {
             let params = {};
-            params.id = item.id;
+            params.artical_id = item.id;
             params.is_collect = val;
             submitCollect(params).then(res => {
                 if (res.data.code === 0) {
