@@ -10,6 +10,7 @@
             :class="{isDragenter: isDragenterIndex===groupIndex}"
         >
             <div
+            draggable="false"
                 class="title"
                 @drop.self="dropItem($event,group, groupIndex, arr)"
                 @dragover="dragover"
@@ -163,7 +164,8 @@ export default {
 .list-item {
     background: #aae0f8;
     margin: 5px;
-    padding:10px;
+    padding: 10px;
+    transition: all 0.2s;
 }
 .list-item:hover {
     background: #6acdf8;
@@ -176,11 +178,11 @@ export default {
 <style>
 .list-enter-active,
 .list-leave-active {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 .list-enter,
 .list-leave-to {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(100px);
 }
 </style>
