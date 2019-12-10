@@ -17,7 +17,7 @@
                         color="rgb(81, 174, 250)"
                     >
                         <el-card class="recommend-content-item">
-                            <div class="content" @click="gotoDetail(item.id)">
+                            <div class="content" @click="gotoDetail(item)">
                                 <div class="artical-title">
                                     {{item.title}}
                                     <el-tag size="mini">前端</el-tag>
@@ -35,17 +35,33 @@
                                     v-if="!item.is_collection"
                                 >
                                     收藏
-                                    <i class="el-icon-star-off"></i>
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>
                                 </span>
                                 <span @click="submitCollect(item, index, 0)" v-else>
-                                    已收藏
-                                    <i class="el-icon-star-on"></i>
+                                    收藏
+                                    <i
+                                        class="fa fa-star"
+                                        aria-hidden="true"
+                                        style="color: rgb(74, 171, 250);"
+                                    ></i>
                                 </span>
-                                <span>
-                                    点赞
-                                    <i class="el-icon-goblet"></i>
+                                <span
+                                    v-if="!item.is_thumb_up"
+                                    @click="submitThumbUp(item, index, 1)"
+                                >
+                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                    <span style="margin-left: 3px;">{{item.thumb_up_count}}</span>
                                 </span>
-                                <img :src="imgUrl" alt />
+                                <span v-else @click="submitThumbUp(item, index, 0)">
+                                    <i
+                                        class="fa fa-thumbs-up"
+                                        aria-hidden="true"
+                                        style="color: #67c23a;"
+                                    ></i>
+                                    <span
+                                        style="color: #67c23a;margin-left: 3px;"
+                                    >{{item.thumb_up_count}}</span>
+                                </span>
                             </div>
                         </el-card>
                     </el-timeline-item>
@@ -97,7 +113,7 @@ Number.prototype.formatDate = function() {
     }
     return ds;
 };
-import { getArtical, submitCollect } from "api/index";
+import { getArtical, submitCollect, submitThumbUp } from "api/index";
 export default {
     name: "home",
     data() {
@@ -142,14 +158,14 @@ export default {
             this.getArticalData();
         },
 
-        gotoDetail(id) {
-            this.$router.push("/layout/detail/" + id);
+        gotoDetail(item) {
+            this.$router.push("/layout/detail/" + item.artical_id);
         },
 
         // 收藏或者取消收藏
         submitCollect(item, index, val) {
             let params = {};
-            params.id = item.id;
+            params.artical_id = item.artical_id;
             params.is_collect = val;
             submitCollect(params).then(res => {
                 if (res.data.code === 0) {
@@ -164,12 +180,47 @@ export default {
                             type: "warning",
                             message: "已取消收藏"
                         });
+                         this.pageList.splice(index,1)
                     }
                 } else {
                     this.$set(
                         this.pageList[index],
                         "is_collect",
                         item.is_collect
+                    );
+                    this.$message.error(res.data.message);
+                }
+            });
+        },
+        submitThumbUp(item, index, val) {
+            let params = {};
+            params.id = item.artical_id;
+            params.is_thumb_up = val;
+            submitThumbUp(params).then(res => {
+                if (res.data.code === 0) {
+                    this.$set(this.pageList[index], "is_thumb_up", val);
+                    if (val) {
+                        this.$set(
+                            this.pageList[index],
+                            "thumb_up_count",
+                            item.thumb_up_count + 1
+                        );
+                        this.$message({
+                            type: "success",
+                            message: "赞一个"
+                        });
+                    } else {
+                        this.$set(
+                            this.pageList[index],
+                            "thumb_up_count",
+                            item.thumb_up_count - 1
+                        );
+                    }
+                } else {
+                    this.$set(
+                        this.pageList[index],
+                        "is_thumb_up",
+                        item.is_thumb_up
                     );
                     this.$message.error(res.data.message);
                 }

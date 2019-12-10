@@ -9,6 +9,7 @@ import articalEdit from './views/articalEdit.vue'
 import WorkDiary from './views/WorkDiary.vue'
 import MyArtical from './views/MyArtical.vue'
 import MyCollection from './views/MyCollection.vue'
+import WxwTest from './views/WxwTest.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,12 @@ export default new Router({
       name: 'Layout',
       component: Layout,
       children:[
+        {
+          path: '/layout/wxw-test',
+          name: 'Home',
+          component: WxwTest,
+          alias: '/test',
+        },
         {
           path: '/layout/home',
           name: 'Home',

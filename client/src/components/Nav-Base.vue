@@ -15,11 +15,13 @@
         <div class="nav-item" :class="{active: activeRoute === '/my-collection'}" @click="goto('/my-collection')">
             <i class="el-icon-star-off"></i> 我的收藏
         </div>
-        <div class="nav-item disabled">
+        <!-- <div class="nav-item disabled">
             <i class="el-icon-chat-dot-round"></i> 我的提问
         </div>
-        <div class="nav-item disabled">待定模块</div>
+        <div class="nav-item disabled">待定模块</div> -->
     </div>
+
+    
 </template>
 <script>
 export default {

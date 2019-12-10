@@ -49,7 +49,7 @@
                             <div class="operator">
                                 <span>
                                     收藏数
-                                    <span style="color: #4790ee">还没写</span>
+                                    <span style="color: #aaa">不写了</span>
                                 </span>
                                 <span>
                                     点赞数

@@ -4,13 +4,8 @@ const mysql = require("mysql");
 const tokenFn = require("./token");
 const _ = require("node-plus-string")
 
-var connection = mysql.createConnection({ //创建mysql实例
-  host: '0.0.0.0',
-  port: '3306',
-  user: 'root',
-  password: '123456789',
-  database: 'test1'
-});
+const mysqlConfig = require("../mysql/mysql")
+var connection = mysql.createConnection(mysqlConfig);
 connection.connect();
 
 router.post('/', function (req, res, next) {
@@ -30,15 +25,15 @@ router.post('/', function (req, res, next) {
   let userInfo = tokenFn.parseToken(token);
 
   let user_id = userInfo.userId;
-  let {id, is_collect} = req.body;
+  let {artical_id, is_collect} = req.body;
   let create_time = Date.now();
 
   // 连接数据库 
   let sql = '';
   if(is_collect){
-    sql = `INSERT INTO collection ( artical_id, user_id, create_time) VALUE (${id}, '${user_id}', ${create_time})`
+    sql = `INSERT INTO collection ( artical_id, user_id, create_time) VALUE (${artical_id}, '${user_id}', ${create_time})`
   } else {
-    sql = `DELETE FROM collection WHERE artical_id = ${id} AND user_id = '${user_id}'`
+    sql = `DELETE FROM collection WHERE artical_id = ${artical_id} AND user_id = '${user_id}'`
   }
   
   connection.query(sql, function (err, result) {

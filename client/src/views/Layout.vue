@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <header-base></header-base>
+        <header-base ></header-base>
         <div class="container">
             <nav-base class="nav"></nav-base>
             <div class="content-wrap">

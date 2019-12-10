@@ -8,6 +8,7 @@ const fs = require('fs');
 const OSS = require('ali-oss');
 const uuid = require('node-uuid')
 const co = require('co');
+const mysqlConfig = require("../mysql/mysql")
 
 // ali-oss 配置
 const OSSoptions = {
@@ -18,13 +19,8 @@ const OSSoptions = {
 }
 const client = new OSS(OSSoptions)
 
-const connection = mysql.createConnection({ //创建mysql实例
-    host:'0.0.0.0',
-    port:'3306',
-    user:'root',
-    password:'123456789',
-    database:'test1'
-});
+
+var connection = mysql.createConnection(mysqlConfig);
 
 // 连接数据库 
 connection.connect();

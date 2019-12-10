@@ -3,13 +3,8 @@ const router = express.Router();
 const mysql = require("mysql");
 const tokenFn = require("./token");
 
-var connection = mysql.createConnection({ //创建mysql实例
-    host:'0.0.0.0',
-    port:'3306',
-    user:'root',
-    password:'123456789',
-    database:'test1'
-});
+const mysqlConfig = require("../mysql/mysql")
+var connection = mysql.createConnection(mysqlConfig);
 connection.connect();
 
 router.get("/", function(req, res, next){
@@ -32,9 +27,9 @@ router.get("/", function(req, res, next){
     let sql = "";
     console.log(req.query)
     if(weekStartDate && weekEndDate){
-        sql = `SELECT create_time, content FROM workDiary WHERE author_id = '${user_id}' AND create_time >= ${weekStartDate} AND create_time <= ${weekEndDate} ORDER BY create_time DESC;`
+        sql = `SELECT create_time, content FROM workdiary WHERE author_id = '${user_id}' AND create_time >= ${weekStartDate} AND create_time <= ${weekEndDate} ORDER BY create_time DESC;`
     } else {
-        sql = `SELECT create_time, content FROM workDiary WHERE author_id = '${user_id}' ORDER BY create_time DESC;`
+        sql = `SELECT create_time, content FROM workdiary WHERE author_id = '${user_id}' ORDER BY create_time DESC;`
     }
     
     connection.query(sql, function (err,result) {

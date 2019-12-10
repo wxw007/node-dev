@@ -44,18 +44,14 @@
                                     <i class="fa fa-star" aria-hidden="true" style="color: rgb(74, 171, 250);"></i>
                                 </span>
                                 <span v-if="!item.is_thumb_up" @click="submitThumbUp(item, index, 1)">
-                                    点赞
                                     <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                    <span style="margin-left: 3px;">{{item.thumb_up_count}}</span>
                                 </span>
                                 <span v-else @click="submitThumbUp(item, index, 0)">
-                                    点赞
+                                    
                                     <i class="fa fa-thumbs-up" aria-hidden="true" style="color: #67c23a;"></i>
+                                    <span style="color: #67c23a;margin-left: 3px;">{{item.thumb_up_count}}</span>
                                 </span>
-                                <!-- <div class="avatar-group">
-                                    <img :src="imgUrl" alt />
-                                    <img :src="imgUrl" alt />
-                                    <img :src="imgUrl" alt />
-                                </div> -->
                             </div>
                         </el-card>
                     </el-timeline-item>
@@ -159,7 +155,7 @@ export default {
         // 收藏或者取消收藏
         submitCollect(item, index, val) {
             let params = {};
-            params.id = item.id;
+            params.artical_id = item.id;
             params.is_collect = val;
             submitCollect(params).then(res => {
                 if (res.data.code === 0) {
@@ -193,12 +189,13 @@ export default {
                 if (res.data.code === 0) {
                     this.$set(this.pageList[index], "is_thumb_up", val);
                     if (val) {
+                         this.$set(this.pageList[index], "thumb_up_count", item.thumb_up_count+1);
                         this.$message({
                             type: "success",
                             message: "赞一个"
                         });
                     } else {
-                        
+                        this.$set(this.pageList[index], "thumb_up_count", item.thumb_up_count-1);
                     }
                 } else {
                     this.$set(

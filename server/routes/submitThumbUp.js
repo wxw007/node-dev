@@ -4,13 +4,8 @@ const mysql = require("mysql");
 const tokenFn = require("./token");
 const _ = require("node-plus-string")
 
-var connection = mysql.createConnection({ //创建mysql实例
-  host: '0.0.0.0',
-  port: '3306',
-  user: 'root',
-  password: '123456789',
-  database: 'test1'
-});
+const mysqlConfig = require("../mysql/mysql")
+var connection = mysql.createConnection(mysqlConfig);
 connection.connect();
 
 router.post('/', function (req, res, next) {
@@ -37,7 +32,6 @@ router.post('/', function (req, res, next) {
   let sql1 = `SELECT thumb_up_list FROM artical WHERE id = ${id}`;
   connection.query(sql1, function (err, result) {
     if (err) {
-      console.log('[SELECT ERROR]:', err.message);
       res.json({
         code: -1,
         message: "操作失败",
@@ -46,14 +40,13 @@ router.post('/', function (req, res, next) {
       return false
     } else {
       let result1 = JSON.parse(JSON.stringify(result));
-      let thumb_up_list = result1[0].thumb_up_list ? result1[0].thumb_up_list : [];
-      thumb_up_list = JSON.parse(thumb_up_list)
-      console.log('thumb_up_list: ', thumb_up_list)
+      console.log("--result: ", result)
+      let thumb_up_list = ((result1.length>0) && result1[0] && result1[0].thumb_up_list)? JSON.parse(result1[0].thumb_up_list) : [];
       if(is_thumb_up){
             thumb_up_list.push(user_id)
 
       } else {
-          let i = thumb_up_list.findIndex(item => {
+          let i =thumb_up_list.findIndex(item => {
             return item === user_id
           })
           thumb_up_list.splice(i, 1)
@@ -62,7 +55,6 @@ router.post('/', function (req, res, next) {
       let sql2 = `UPDATE artical SET thumb_up_list='${JSON.stringify(thumb_up_list)}' WHERE id=${id}`;
       connection.query(sql2, function (err, result) {
         if (err) {
-          console.log('[SELECT ERROR]11:', err.message);
           res.json({
             code: -1,
             message: "操作失败",
@@ -70,7 +62,6 @@ router.post('/', function (req, res, next) {
           })
           return false
         } else {
-          console.log('result: ', result)
           res.json({
             code: 0,
             message: "操作成功",

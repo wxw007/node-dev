@@ -1,3 +1,4 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 //less全局配置
 var path = require('path')
 
@@ -5,6 +6,9 @@ function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
+function time() {
+    return Date.now()
+}
 module.exports = {
     publicPath: './',
     chainWebpack: (config) => {
@@ -16,5 +20,17 @@ module.exports = {
             .set('store', resolve('src/store'))
             .set('util', resolve('src/util'))
     },
+    configureWebpack: {
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: `css/[name].${time()}.css`,
+                chunkFilename: `css/[name].${time()}.css`
+            })
+        ]
+    },
+    devServer: {
+        disableHostCheck: true
+    },
+
 
 }

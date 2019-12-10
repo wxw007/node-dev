@@ -4,13 +4,8 @@ const mysql = require("mysql");
 const tokenFn = require("./token");
 const uuid = require("uuid")
 
-var connection = mysql.createConnection({ //创建mysql实例
-    host: '0.0.0.0',
-    port: '3306',
-    user: 'root',
-    password: '123456789',
-    database: 'test1'
-});
+const mysqlConfig = require("../mysql/mysql")
+var connection = mysql.createConnection(mysqlConfig);
 connection.connect();
 
 router.post("/", function (req, res, next) {
@@ -46,7 +41,7 @@ router.post("/", function (req, res, next) {
             1
 
 
-        let sql = `SELECT content, id FROM workDiary WHERE author_id = '${user_id}' AND create_time >= ${start} AND create_time < ${end};`
+        let sql = `SELECT content, id FROM workdiary WHERE author_id = '${user_id}' AND create_time >= ${start} AND create_time < ${end};`
         connection.query(sql, function (err, result) {
             
             
