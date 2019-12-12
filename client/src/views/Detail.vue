@@ -78,31 +78,12 @@ export default {
     created() {
         this.initData();
     },
-    mounted() {
-        this.$socket.emit("msg", { a: 1 }); // 发送
-    },
-    sockets: {
-        connect() {
-            this.id = this.$socket.id;
-            this.$socket.emit("login", loginId); //监听connect事件
-        },
-        message(data) {
-            //监听message事件，方法是后台定义和提供的
-            console.log(data);
-        }
-    },
-
     filters: {
         formatDate(val) {
             return formater.formatDate(val);
         }
     },
     methods: {
-        clickButton: function(val) {
-            //添加按钮事件向服务端发送数据
-            this.$socket.emit("emit_method", val);
-        },
-
         // 初始化回填数据
         initData() {
             this.id = this.$route.params.id - 0;

@@ -107,6 +107,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import { getUserInfo } from "api/index";
 export default {
@@ -160,6 +161,7 @@ export default {
     }
 };
 </script>
+
 <style lang="less" scoped>
 .header {
     height: 60px;
@@ -243,6 +245,7 @@ export default {
     -webkit-background-size: 200% 100%;
     animation: bgp 2s infinite linear;
 }
+
 @-webkit-keyframes bgp {
     0% {
         background-position: 0 0;

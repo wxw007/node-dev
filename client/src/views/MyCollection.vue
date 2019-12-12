@@ -17,7 +17,7 @@
                         color="rgb(81, 174, 250)"
                     >
                         <el-card class="recommend-content-item">
-                            <div class="content" @click="gotoDetail(item.id)">
+                            <div class="content" @click="gotoDetail(item)">
                                 <div class="artical-title">
                                     {{item.title}}
                                     <el-tag size="mini">前端</el-tag>
@@ -158,8 +158,8 @@ export default {
             this.getArticalData();
         },
 
-        gotoDetail(id) {
-            this.$router.push("/layout/detail/" + id);
+        gotoDetail(item) {
+            this.$router.push("/layout/detail/" + item.artical_id);
         },
 
         // 收藏或者取消收藏
