@@ -12,7 +12,8 @@ Vue.use(hupicatUi)
 
 import "../public/css/common.css"
 
-
+import io from "socket.io-client";
+window.socket = io("ws://localhost:4000");
 
 Vue.config.productionTip = false
 

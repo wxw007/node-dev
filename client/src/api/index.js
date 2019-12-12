@@ -139,3 +139,8 @@ export const submitCollect = params => {
 export const submitThumbUp = params => {
     return instance.post('/submitThumbUp', params)
 }
+
+// 获取消息
+export const getMessage = params => {
+    return instance.get('/getMessage', {params})
+}

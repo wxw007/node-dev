@@ -5,22 +5,47 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('express-app:server');
+var debug = require('debug')('ws:server');
 var http = require('http');
+var _ = require('underscore');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
- 
 var server = http.createServer(app);
+
+// val msg = null;
+
+// function(){
+//   msg = ""
+// }
+
+//添加的socket代码
+var io = require('socket.io').listen(server);
+
+io.on('connection', function (socket) {
+  console.log('用户ID: ', socket.id)
+  console.log('用户连接！');
+  socket.on('disconnect', function () {
+    console.log('用户断开连接');
+  });
+
+  socket.on('submit', function (data) {
+    console.log(io.sockets.sockets[socket.id])
+    io.emit('test', data)
+  });
+
+});
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -59,9 +84,9 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ?
+    'Pipe ' + port :
+    'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -84,8 +109,8 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ?
+    'pipe ' + addr :
+    'port ' + addr.port;
   debug('Listening on ' + bind);
 }

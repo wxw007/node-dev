@@ -26,30 +26,13 @@ router.post('/', function (req, res, next) {
   let userInfo = tokenFn.parseToken(token);
 
   let user_id = userInfo.userId;
-  let {content, parent_id, belong_to_id, artical_id} = req.body;
+  let {content, parent_id, belong_to_id, artical_id, parent_user_id} = req.body;
+  let is_read = parent_user_id === user_id ? 1 : 0;
   let create_time = Date.now();
-
-  //转码
-function html_encode(str)
-{
-    var s = "";
-    if (str.length == 0) return "";
-    s = str.replace(/&/g, "&amp;");
-    s = s.replace(/</g, "&lt;");
-    s = s.replace(/>/g, "&gt;");
-    s = s.replace(/ /g, "&nbsp;");
-    s = s.replace(/\'/g, "&#39;");
-    s = s.replace(/\"/g, "&quot;");
-    s = s.replace(/\n/g, "<br/>");
-    return s;
-}
-// content = html_encode(content)
-
-  
 
   // 连接数据库 
   
-  let insertSql = `INSERT INTO reply (artical_id, parent_id, content, user_id, create_time, belong_to_id) VALUE ('${artical_id}', ${parent_id}, '${content}', '${user_id}', '${create_time}', ${belong_to_id})`;
+  let insertSql = `INSERT INTO reply (artical_id, parent_id, content, user_id, create_time, belong_to_id, parent_user_id, is_read) VALUE ('${artical_id}', ${parent_id}, '${content}', '${user_id}', '${create_time}', ${belong_to_id},  '${parent_user_id}', ${is_read})`;
   connection.query(insertSql, function (err, result) {
     if (err) {
       console.log('[SELECT ERROR]:', err.message);

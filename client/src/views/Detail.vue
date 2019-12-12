@@ -54,9 +54,7 @@
                 </div>
             </div>
         </div>
-        <div v-else class="no-data">
-            暂无相关文章 嘻嘻！
-        </div>
+        <div v-else class="no-data">暂无相关文章 嘻嘻！</div>
     </div>
 </template>
 <script>
@@ -74,18 +72,37 @@ export default {
             parent_id: null,
             placeholder: "说点什么吧...",
             parentReply: {},
-            hasData: true,
+            hasData: true
         };
     },
     created() {
         this.initData();
     },
+    mounted() {
+        this.$socket.emit("msg", { a: 1 }); // 发送
+    },
+    sockets: {
+        connect() {
+            this.id = this.$socket.id;
+            this.$socket.emit("login", loginId); //监听connect事件
+        },
+        message(data) {
+            //监听message事件，方法是后台定义和提供的
+            console.log(data);
+        }
+    },
+
     filters: {
         formatDate(val) {
             return formater.formatDate(val);
         }
     },
     methods: {
+        clickButton: function(val) {
+            //添加按钮事件向服务端发送数据
+            this.$socket.emit("emit_method", val);
+        },
+
         // 初始化回填数据
         initData() {
             this.id = this.$route.params.id - 0;
@@ -97,9 +114,9 @@ export default {
             getArtical({ id: this.id }).then(res => {
                 let data = res.data;
                 if (data.code === 0) {
-                    if(!data.content || data.content.length === 0){
+                    if (!data.content || data.content.length === 0) {
                         this.hasData = false;
-                        return
+                        return;
                     }
                     this.artical = data.content[0];
                 } else {
@@ -141,6 +158,7 @@ export default {
             params.artical_id = this.id;
             params.belong_to_id = item.belong_to_id || item.id || null;
             params.parent_id = item.id || null;
+            params.parent_user_id = item.user_id || null;
             params.content = this.replyContent;
             submitReply(params).then(res => {
                 if (res.data.code === 0) {
@@ -261,7 +279,7 @@ export default {
         }
     }
 }
-.no-data{
+.no-data {
     text-align: center;
     color: #aaa;
     padding-top: 50px;
