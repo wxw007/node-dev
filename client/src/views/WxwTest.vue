@@ -1,5 +1,6 @@
 <template>
     <div class="box">
+        <el-button v-log="{params:{a:1,b:2}}">123456</el-button>
         <!-- <component is="kkpie"></component> -->
         <!-- <kkpie percent="0.2" /> -->
         <br />
