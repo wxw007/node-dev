@@ -10,7 +10,7 @@
   "dependencies": {
     "kk-log": "1.0.8",
     "ali-oss": "^6.1.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "element-ui": "2.12.0",
     "hupicat-ui": "^0.1.0",
